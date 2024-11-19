@@ -1,10 +1,6 @@
 <template>
   <div class="home">
-    <NavBar />
-    <SearchBar />
-    <div class="content">
-      <h1>Home</h1>
-    </div>
+    <h1>Home</h1>
   </div>
 </template>
 
@@ -22,8 +18,4 @@ export default {
 </script>
 
 <style scoped>
-.content {
-  margin-top: 95px;
-  margin-left: 240px;
-}
 </style>
