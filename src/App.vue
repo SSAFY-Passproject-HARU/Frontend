@@ -1,15 +1,15 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/common/NavBar.vue'
-import SearchBar from './components/common/SearchBar.vue'
+import { RouterLink, RouterView } from "vue-router";
+import NavBar from "./components/common/NavBar.vue";
+import SearchBar from "./components/common/SearchBar.vue";
 </script>
 
 <template>
   <div class="container">
-    <NavBar class="sidebar" />
+    <NavBar />
     <div class="main">
-      <SearchBar class="header" />
-      <RouterView class="content"/>
+      <SearchBar />
+      <RouterView class="content" />
     </div>
   </div>
 </template>
@@ -33,11 +33,15 @@ import SearchBar from './components/common/SearchBar.vue'
 }
 
 .content {
-  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  flex-grow: 1;
   margin-top: 95px;
   margin-left: 240px;
   padding: 36px;
   background-color: #d9f7d7;
-  overflow: auto; /* 콘텐츠가 많으면 스크롤 가능 */
+  overflow: auto;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
 }
 </style>
