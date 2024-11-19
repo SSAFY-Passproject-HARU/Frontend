@@ -18,6 +18,6 @@ export default {
   right: 0;         /* 오른쪽 끝에 맞춤 */
   width: 100%;
   height: 95px;
-  background-color: aqua;
+  background-color: rgba(0, 0, 255, 0.5); /* 빨간색 배경에 50% 투명도 */
 }
 </style>

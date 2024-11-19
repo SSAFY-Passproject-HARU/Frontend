@@ -1,6 +1,8 @@
 <template>
   <div class="map-view">
-    <h1>map</h1>
+    <div class="container">
+      <h1>map</h1>
+    </div>
   </div>
 </template>
 
@@ -11,5 +13,11 @@ export default {
 </script>
 
 <style>
-
+.container {
+  padding: 36px;
+  background-color: blueviolet;
+}
+h1 {
+  margin: 0;
+}
 </style>
