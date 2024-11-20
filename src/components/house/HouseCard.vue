@@ -1,7 +1,10 @@
 <template>
   <div class="card">
     <div class="card-image">
-      <img src="https://i.pinimg.com/enabled_lo_mid/736x/49/3a/59/493a59d3a8f37d60b5227a2cf2fb2899.jpg" alt="House Image" />
+      <img
+        src="https://i.pinimg.com/enabled_lo_mid/736x/49/3a/59/493a59d3a8f37d60b5227a2cf2fb2899.jpg"
+        alt="House Image"
+      />
     </div>
     <div class="card-info">
       <!-- 월세 정보 -->
@@ -20,8 +23,8 @@
 
 <script>
 export default {
-  name: 'HouseCard',
-}
+  name: "HouseCard",
+};
 </script>
 
 <style scoped>
