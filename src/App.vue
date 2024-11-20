@@ -1,44 +1,54 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import NavBar from "./components/common/NavBar.vue";
-import SearchBar from "./components/common/SearchBar.vue";
+import TopBar from "./components/common/TopBar.vue";
 import "./styles/variables.scss";
 </script>
 
 <template>
   <div class="container">
-    <NavBar />
-    <div class="main">
-      <SearchBar />
-      <RouterView class="content" />
+    <div class="inner-container">
+      <NavBar />
+      <div class="main">
+        <TopBar />
+        <RouterView class="content" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 .container {
   display: flex;
+  justify-content: center;
   height: 100vh; /* 화면 전체 높이를 차지 */
+  background-color: skyblue;
+}
+
+.inner-container {
+  width: 1440px;
+  display: flex;
+  position: relative;
+  background-color: white;
 }
 
 .main {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  position: relative;
+  width: calc(100% - 240px);
 }
 
 .content {
   flex-grow: 1;
-  margin-top: 95px;
-  margin-left: 240px;
-  padding: 36px;
-  background-color: #d9f7d7;
+  padding: 36px 0 0 36px;
+  background-color: var(--secondary);
+  border-radius: 10px 0 0 0;
+  overflow: auto;
 }
 
 .content::-webkit-scrollbar {
