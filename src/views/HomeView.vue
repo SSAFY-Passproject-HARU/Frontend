@@ -5,17 +5,9 @@
 </template>
 
 <script>
-import NavBar from '../components/common/NavBar.vue'
-import SearchBar from '../components/common/SearchBar.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    NavBar,
-    SearchBar
-  }
-}
+  name: "Home",
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
