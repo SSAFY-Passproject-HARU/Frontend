@@ -23,7 +23,6 @@ export default {
 
 <style>
 .navbar {
-  position: fixed; /* 화면 왼쪽에 고정 */
   top: 0; /* 상단에 고정 */
   left: 0; /* 왼쪽에 고정 */
   width: 240px;
