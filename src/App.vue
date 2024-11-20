@@ -39,7 +39,6 @@ import "./styles/variables.scss";
   margin-left: 240px;
   padding: 36px;
   background-color: #d9f7d7;
-  overflow: auto;
 }
 
 .content::-webkit-scrollbar {
