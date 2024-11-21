@@ -5,9 +5,9 @@
       <input type="text" placeholder="매물 검색" class="custom-input" />
     </div>
     <div class="mypage"></div>
-    <a href="@/views/mypage" class="mypage">
+    <router-link to="/mypage" class="mypage">
       <img class="mypage" src="@/assets/images/icons/icon-mypage.png" alt="mypage" />
-    </a>
+    </router-link>
   </div>
 </template>
 
@@ -17,13 +17,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .topbar {
   position: sticky;
   top: 0;
   left: 240px; /* NavBar의 너비(240px)만큼 오른쪽으로 밀어서 배치 */
   right: 0; /* 오른쪽 끝에 맞춤 */
-  width: 100%;
   height: 96px;
   padding-right: 48px;
   display: flex;
