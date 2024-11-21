@@ -44,11 +44,13 @@ import "./styles/variables.scss";
 }
 
 .content {
+  width: 100%;
   flex-grow: 1;
-  padding: 36px 0 0 36px;
+  padding: 36px;
   background-color: var(--secondary);
   border-radius: 10px 0 0 0;
-  overflow: auto;
+  overflow: hidden;
+  position: relative;
 }
 
 .content::-webkit-scrollbar {
