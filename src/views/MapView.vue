@@ -77,28 +77,28 @@ li:last-child {
   height: calc(100vh - 95px);
 }
 .view {
-  background-color: aqua;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--white);
+  border-radius: 10px;
+  border: 1px solid var(--secondary-border);
 }
 .view-header {
   display: flex;
   align-items: center;
   height: 72px;
-  background-color: pink;
+  border-bottom: 1px solid var(--gray8);
 }
 .main-content {
   display: flex;
   flex-grow: 1;
-  background-color: hotpink;
   overflow: hidden;
 }
 .list {
   width: 340px;
   min-width: 340px;
-  background-color: greenyellow;
   overflow-y: auto;
 }
 .list::-webkit-scrollbar {
@@ -106,6 +106,5 @@ li:last-child {
 }
 .map {
   flex-grow: 1;
-  background-color: yellow;
 }
 </style>

@@ -49,7 +49,7 @@ import "./styles/variables.scss";
   padding: 36px;
   background-color: var(--secondary);
   border-radius: 10px 0 0 0;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 }
 
