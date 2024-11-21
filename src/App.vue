@@ -1,18 +1,11 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import NavBar from "./components/common/NavBar.vue";
-import TopBar from "./components/common/TopBar.vue";
 import "./styles/variables.scss";
 </script>
 
 <template>
   <div class="container">
     <div class="inner-container">
-      <NavBar />
-      <div class="main">
-        <TopBar />
-        <RouterView class="content" />
-      </div>
+      <RouterView />
     </div>
   </div>
 </template>
@@ -34,26 +27,5 @@ import "./styles/variables.scss";
   display: flex;
   position: relative;
   background-color: white;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: calc(100% - 240px);
-}
-
-.content {
-  width: 100%;
-  flex-grow: 1;
-  padding: 36px;
-  background-color: var(--secondary);
-  border-radius: 10px 0 0 0;
-  overflow: auto;
-  position: relative;
-}
-
-.content::-webkit-scrollbar {
-  display: none;
 }
 </style>

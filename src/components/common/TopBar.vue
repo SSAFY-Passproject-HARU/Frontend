@@ -23,7 +23,6 @@ export default {
   top: 0;
   left: 240px; /* NavBar의 너비(240px)만큼 오른쪽으로 밀어서 배치 */
   right: 0; /* 오른쪽 끝에 맞춤 */
-  width: 100%;
   height: 96px;
   padding-right: 48px;
   display: flex;

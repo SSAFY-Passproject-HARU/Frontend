@@ -1,28 +1,61 @@
 <script setup>
 import HouseImageCard from "@/components/house/HouseImageCard.vue";
+import NavBar from "@/components/common/NavBar.vue";
+import TopBar from "@/components/common/TopBar.vue";
 </script>
 
 <template>
   <div class="home">
-    <div class="top-menu">
-      <h1 class="title">맞춤 추천 매물</h1>
-      <button>알고리즘 업데이트하기</button>
-    </div>
-    <div class="house-list">
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
-      <HouseImageCard />
+    <NavBar />
+    <div class="main">
+      <TopBar />
+      <div class="content">
+        <div class="top-menu">
+          <h1 class="title">맞춤 추천 매물</h1>
+          <button>알고리즘 업데이트하기</button>
+        </div>
+        <div class="house-list">
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+          <HouseImageCard />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.home {
+  width: 100%;
+  display: flex;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: calc(100% - 240px);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 36px;
+  background-color: var(--secondary);
+  border-radius: 10px 0 0 0;
+  overflow: auto;
+  position: relative;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
 .top-menu {
   width: calc(360px * 3 + 40px);
   display: flex;
