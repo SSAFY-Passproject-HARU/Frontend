@@ -5,9 +5,9 @@
       <input type="text" placeholder="매물 검색" class="custom-input" />
     </div>
     <div class="mypage"></div>
-    <a href="@/views/mypage" class="mypage">
+    <router-link to="/mypage" class="mypage">
       <img class="mypage" src="@/assets/images/icons/icon-mypage.png" alt="mypage" />
-    </a>
+    </router-link>
   </div>
 </template>
 

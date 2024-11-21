@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <div class="logo">HARU</div>
+    <router-link to="/" class="logo">HARU</router-link>
     <div class="notice">공지사항</div>
     <div class="nav-list">
       <div class="nav-item">맞춤 추천</div>
