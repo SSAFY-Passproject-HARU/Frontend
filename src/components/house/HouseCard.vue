@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-image">
       <img
-        src="https://i.pinimg.com/enabled_lo_mid/736x/49/3a/59/493a59d3a8f37d60b5227a2cf2fb2899.jpg"
+        src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
         alt="House Image"
       />
     </div>
