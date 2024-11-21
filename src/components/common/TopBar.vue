@@ -17,7 +17,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .topbar {
   position: sticky;
   top: 0;
