@@ -1,29 +1,37 @@
 <template>
   <div class="card">
-    <div class="card-image">
-      <img
-        src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
-        alt="House Image"
-      />
-    </div>
-    <div class="card-info">
-      <!-- 월세 정보 -->
-      <div class="rental-info">
-        <span class="price">월세 100/30</span>
+    <router-link :to="`/house/detail/${house.aptSeq}`" class="card-link">
+      <div class="card-image">
+        <img
+          src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
+          alt="House Image"
+        />
       </div>
-      <!-- 추가 정보 -->
-      <div class="additional-info">
-        <p class="room-type">원룸</p>
-        <p class="floor-size">3층, 20.00m²</p>
-        <p class="maintenance-fee">관리비 5만</p>
+      <div class="card-info">
+        <!-- 월세 정보 -->
+        <div class="rental-info">
+          <span class="price">{{ house.aptName }}</span>
+        </div>
+        <!-- 추가 정보 -->
+        <div class="additional-info">
+          <p class="room-type">아파트</p>
+          <p class="floor-size">3층, 20.00m²</p>
+          <p class="maintenance-fee">{{ house.gugun }} {{ house.dong }} {{ house.jibun }}</p>
+        </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
   name: "HouseCard",
+  props: {
+    house: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

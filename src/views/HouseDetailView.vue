@@ -9,10 +9,11 @@
       />
 
       <!-- 기본 정보 -->
-      <div class="house-information">
+      <div class="house-information" v-if="houseDetails">
         <p class="house-type">아파트</p>
-        <h1 class="price">매매 3억 9,000</h1>
+        <h1 class="price">{{ houseDetails[0].aptName }}</h1>
         <p class="area">공급 81.5m² | 방 3, 욕실 2</p>
+        <p>Apartment Seq: {{ aptSeq }}</p>
       </div>
 
       <!-- 집 설명 -->
@@ -59,10 +60,37 @@
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
-  name: "housedetail",
+  name: "HouseDetailView",
+  data() {
+    return {
+      aptSeq: null,
+      houseDetails: null, // 아파트 상세 정보
+    };
+  },
+  mounted() {
+    this.aptSeq = this.$route.params.aptSeq;
+    this.fetchHouseDetails(); // 데이터 로드
+  },
+  methods: {
+    fetchHouseDetails() {
+      // API로 아파트 상세 정보 요청
+      axios.get(`http://localhost:8080/home/list/${this.aptSeq}`)
+        .then((response) => {
+          // 성공적으로 데이터를 받으면 houseDetails에 할당
+          this.houseDetails = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching house details:', error);
+        });
+    },
+  },
 };
 </script>
+
   
 <style scoped>
 * {
@@ -106,6 +134,8 @@ li {
 }
 .main-image {
   margin: 36px;
+  height: 60vh;
+  object-fit: cover;
 }
 .view > div > * {
   margin-bottom: 15px;
