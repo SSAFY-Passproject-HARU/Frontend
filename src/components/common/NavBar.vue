@@ -35,7 +35,6 @@ export default {
 .logo {
   width: 100%;
   height: 30px;
-  background-color: white;
   margin-bottom: 48px;
   color: var(--primary);
   font-family: var(--font-family-logo);
