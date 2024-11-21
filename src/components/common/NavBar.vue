@@ -1,8 +1,9 @@
 <template>
   <div class="navbar">
     <router-link to="/" class="logo">HARU</router-link>
-    <div class="notice">공지사항</div>
     <div class="nav-list">
+      <div class="nav-item">공지사항</div>
+      <hr />
       <div class="nav-item">맞춤 추천</div>
       <div class="nav-item">종류별 추천</div>
       <div class="nav-item">지도로 보기</div>
@@ -35,7 +36,7 @@ export default {
 .logo {
   width: 100%;
   height: 30px;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
   color: var(--primary);
   font-family: var(--font-family-logo);
   font-size: var(--font-size-header);
