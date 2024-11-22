@@ -27,5 +27,6 @@ import "./styles/variables.scss";
   display: flex;
   position: relative;
   background-color: white;
+  overflow-y: hidden;
 }
 </style>
