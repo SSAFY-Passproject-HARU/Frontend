@@ -1,10 +1,14 @@
 <template>
-    <div class="detail-view">
+  <div class="detail">
+    <NavBar />
+    <div class="main">
+      <TopBar />
+      <div class="detail-view content">
       <div class="view">
       <!-- 집의 메인 이미지 -->
       <img
         class="main-image"
-        src="https://i.pinimg.com/736x/c2/b9/3a/c2b93a893b7f1b7af5953980ed4b394c.jpg"
+        src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
         alt="House Image"
       />
 
@@ -33,21 +37,21 @@
       </div>
 
       <!-- 편의시설 -->
-      <div class="amenities">
+      <div class="amenities" v-if="houseDetails">
         <h2>편의시설</h2>
-        <p>주차 공간, 24시간 경비, 헬스장, 커뮤니티 시설 등 다양한 편의시설이 제공됩니다.</p>
+        <FacilityMap class="component" :latitude="houseDetails[0].latitude" :longitude="houseDetails[0].longitude"/>
       </div>
 
       <!-- 로드뷰 -->
-      <div class="road-view">
+      <div class="road-view" v-if="houseDetails">
         <h2>로드뷰</h2>
-        <img src="https://via.placeholder.com/900x400.png?text=로드뷰+이미지" alt="Road View" />
+        <RoadView class="component" :latitude="houseDetails[0].latitude" :longitude="houseDetails[0].longitude"/>
       </div>
 
       <!-- 거래금액 그래프 -->
-      <div class="price-graph">
+      <div class="price-graph" v-if="houseDetails">
         <h2>거래금액 그래프</h2>
-        <img src="https://via.placeholder.com/900x400.png?text=그래프" alt="Price Graph" />
+        <TransactionGraph class="component" :aptSeq="houseDetails[0].aptSeq"/>
       </div>
 
       <!-- 문의 버튼 -->
@@ -57,13 +61,21 @@
       </div>
       </div>
     </div>
+    </div>
+  </div>
 </template>
-  
+
 <script>
 import axios from 'axios';
+import NavBar from "@/components/common/NavBar.vue";
+import TopBar from "@/components/common/TopBar.vue";
+import RoadView from '@/components/map/RoadView.vue';
+import FacilityMap from '@/components/map/FacilityMap.vue';
+import TransactionGraph from '@/components/house/TransactionGraph.vue';
 
 export default {
   name: "HouseDetailView",
+  components: { NavBar, TopBar, RoadView, FacilityMap, TransactionGraph },
   data() {
     return {
       aptSeq: null,
@@ -93,6 +105,31 @@ export default {
 
   
 <style scoped>
+.detail {
+  width: 100%;
+  display: flex;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: calc(100% - 240px);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 36px;
+  background-color: var(--secondary);
+  border-radius: 10px 0 0 0;
+  overflow: auto;
+  position: relative;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   font-family: var(--font-family-primary);
   font-size: var(--font-weight-regular);
@@ -148,5 +185,9 @@ li {
 }
 .house-type {
   color: var(--gray1);
+}
+.component {
+  display: block;
+  width: 100%;
 }
 </style>
