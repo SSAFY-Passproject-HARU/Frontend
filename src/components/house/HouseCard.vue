@@ -38,6 +38,7 @@ export default {
 <style scoped>
 * {
   font-family: var(--font-family-primary);
+  color: var(--black);
 }
 .card {
   display: flex;

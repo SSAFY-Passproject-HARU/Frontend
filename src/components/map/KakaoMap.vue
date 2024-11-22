@@ -41,7 +41,7 @@ export default {
       const script = document.createElement("script");
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_MAP_API_KEY}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_MAP_API_KEY}&libraries=services`;
       document.head.appendChild(script);
     }
   },
@@ -77,15 +77,17 @@ export default {
         this.panToFirstHouse(houses[0]);
 
         houses.forEach((house) => {
-          this.addMarker(house.aptName, house.latitude, house.longitude);
+          this.addMarker(house); // 마커 추가 시 house 객체를 넘김
         });
       }
     },
 
     // 마커 추가 메서드
-    addMarker(name, lat, lng) {
+    addMarker(house) {
+      const { aptName, latitude, longitude, aptSeq } = house; // aptSeq도 함께 받음
+
       // LatLng 객체 생성
-      const position = new kakao.maps.LatLng(lat, lng);
+      const position = new kakao.maps.LatLng(latitude, longitude);
 
       // 마커 생성
       const marker = new kakao.maps.Marker({
@@ -96,8 +98,8 @@ export default {
       marker.setMap(this.map);
 
       // 커스텀 오버레이 생성
-      var content = `
-      <div style="padding: 5px; background-color: var(--gray6); color: #fff;">${name}</div>
+      const content = `
+        <div style="padding: 5px; background-color: var(--gray6); color: #fff;">${aptName}</div>
       `;
       const overlay = new kakao.maps.CustomOverlay({
         map: this.map,
@@ -105,14 +107,16 @@ export default {
         content: content,
       });
 
-      // 마커를 지도에 표시
-      overlay.setMap(this.map);
-
       // 마커를 배열에 저장
       this.markers.push(marker);
 
       // 오버레이를 배열에 저장
       this.overlays.push(overlay);
+
+      // 마커 클릭 시 URL로 이동
+      kakao.maps.event.addListener(marker, 'click', () => {
+        this.$router.push(`/house/detail/${aptSeq}`);
+      });
     },
 
     // 첫 번째 house의 좌표로 지도 중심 이동
@@ -123,7 +127,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 .main {

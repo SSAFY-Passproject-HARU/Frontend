@@ -1,43 +1,52 @@
 <template>
-  <div class="map-view">
-    <h1>지도로 보기</h1>
-    <div class="view">
-      <div class="view-header">
-        <select v-model="selectedSido" @change="onSidoChange">
-          <option value="">시/도 선택</option>
-          <option v-for="sido in sidoOptions" :key="sido.code" :value="sido">{{ sido.name }}</option>
-        </select>
-        <select v-model="selectedGugun" @change="onGugunChange">
-          <option value="">구/군 선택</option>
-          <option v-for="gugun in gugunOptions" :key="gugun.code" :value="gugun">{{ gugun.name }}</option>
-        </select>
-        <select v-model="selectedDong" @change="onDongChange">
-          <option value="">동 선택</option>
-          <option v-for="dong in dongOptions" :key="dong.code" :value="dong">{{ dong.name }}</option>
-        </select>
-      </div>
-      <div class="main-content">
-        <aside class="list">
-          <ul v-if="houses.length > 0">
-            <li v-for="house in houses" :key="house.id">
-              <HouseCard :house="house" />
-            </li>
-          </ul>
-          <div v-else class="no-data">데이터가 없습니다.</div>
-        </aside>
-        <kakaoMap class="map" :houses="houses" />
+  <div class="map">
+    <NavBar />
+    <div class="main">
+      <TopBar />
+      <div class="map-view content">
+        <h1>지도로 보기</h1>
+        <div class="view">
+          <div class="view-header">
+            <select v-model="selectedSido" @change="onSidoChange">
+              <option value="">시/도 선택</option>
+              <option v-for="sido in sidoOptions" :key="sido.code" :value="sido">{{ sido.name }}</option>
+            </select>
+            <select v-model="selectedGugun" @change="onGugunChange">
+              <option value="">구/군 선택</option>
+              <option v-for="gugun in gugunOptions" :key="gugun.code" :value="gugun">{{ gugun.name }}</option>
+            </select>
+            <select v-model="selectedDong" @change="onDongChange">
+              <option value="">동 선택</option>
+              <option v-for="dong in dongOptions" :key="dong.code" :value="dong">{{ dong.name }}</option>
+            </select>
+          </div>
+          <div class="main-content">
+            <aside class="list">
+              <ul v-if="houses.length > 0">
+                <li v-for="house in houses" :key="house.id">
+                  <HouseCard :house="house" />
+                </li>
+              </ul>
+              <div v-else class="no-data">데이터가 없습니다.</div>
+            </aside>
+            <kakaoMap class="map" :houses="houses" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
 import HouseCard from "@/components/house/HouseCard.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
+import NavBar from "@/components/common/NavBar.vue";
+import TopBar from "@/components/common/TopBar.vue";
 import axios from "axios";
 
 export default {
-  components: { HouseCard, KakaoMap },
+  components: { HouseCard, KakaoMap, NavBar, TopBar },
   data() {
     return {
       sidoOptions: [],
@@ -149,6 +158,31 @@ export default {
 </script>
 
 <style scoped>
+.map {
+  width: 100%;
+  display: flex;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: calc(100% - 240px);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 36px;
+  background-color: var(--secondary);
+  border-radius: 10px 0 0 0;
+  overflow: auto;
+  position: relative;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   font-family: var(--font-family-primary);
 }
