@@ -2,50 +2,57 @@
   <div class="navbar">
     <router-link to="/" class="logo">HARU</router-link>
     <div class="nav-list">
-      <div         
+      <router-link 
+        to="/notice"         
         class="nav-item"
         :class="{ active: route.path === '/notice' }"
       >
         공지사항
-      </div>
+      </router-link>
       <hr />
-      <div         
+      <router-link 
+        to="/"         
         class="nav-item"
         :class="{ active: route.path === '/' }"
       >
         맞춤 추천
-      </div>
-      <div         
+      </router-link>
+      <router-link
+        to="types"         
         class="nav-item"
         :class="{ active: route.path === '/types' }"
       >
         종류별 추천
-      </div>
-      <div         
+      </router-link>
+      <router-link 
+        to="map"         
         class="nav-item"
         :class="{ active: route.path === '/map' }"
       >
         지도로 보기
-      </div>
-      <div         
+      </router-link>
+      <router-link
+        to="news"          
         class="nav-item"
         :class="{ active: route.path === '/news' }"
       >
         관심 지역 뉴스
-      </div>
-      <div         
+      </router-link>
+      <router-link 
+        to="favorites"         
         class="nav-item"
         :class="{ active: route.path === '/favorites' }"
       >
         찜한 매물
-      </div>
+      </router-link>
       <hr />
-      <div         
+      <router-link
+        to="community"          
         class="nav-item"
         :class="{ active: route.path === '/community' }"
       >
         커뮤니티
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -106,6 +113,10 @@ const route = useRoute(); // 현재 경로 정보를 가져옴
   font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
+}
+
+a {
+  color: var(--gray3);
 }
 
 .nav-item.active {
