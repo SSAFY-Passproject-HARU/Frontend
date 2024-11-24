@@ -40,8 +40,12 @@
         찜한 매물
       </div>
       <hr />
-      <div class="nav-item">커뮤니티</div>
-      <div class="nav-item">관심 지역 목록</div>
+      <div         
+        class="nav-item"
+        :class="{ active: route.path === '/community' }"
+      >
+        커뮤니티
+      </div>
     </div>
   </div>
 </template>

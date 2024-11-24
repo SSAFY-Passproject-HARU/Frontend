@@ -7,6 +7,7 @@ import HouseRegisterView from "@/views/HouseRegisterView.vue";
 import MapView from "../views/MapView.vue";
 import HouseDetailView from "../views/HouseDetailView.vue";
 import NewsView from "@/views/NewsView.vue";
+import LandingView from "@/views/LandingView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    {
+      path: "/landing",
+      name: "landing",
+      component: LandingView,
     },
     {
       path: "/login",
