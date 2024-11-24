@@ -23,6 +23,10 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 .navbar {
   top: 0; /* 상단에 고정 */
   left: 0; /* 왼쪽에 고정 */
@@ -31,6 +35,7 @@ export default {
   padding: 32px 24px 32px 24px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;;
 }
 
 .logo {
