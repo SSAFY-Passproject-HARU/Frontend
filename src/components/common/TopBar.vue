@@ -45,15 +45,13 @@ export default {
       const store = useUserStore(); // Pinia store 사용
       try {
         await store.logout(); // 로그아웃 API 호출
-        alert("로그아웃되었습니다. 감사합니다.");
-        this.$router.push("/login"); // 로그인 페이지로 이동
       } catch (error) {
         console.error("로그아웃 실패:", error);
         alert("로그아웃 중 문제가 발생했습니다.");
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>

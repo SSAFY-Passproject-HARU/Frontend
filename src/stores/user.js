@@ -50,9 +50,9 @@ export const useUserStore = defineStore("user", () => {
     userHttp
       .delete("/logout")
       .then(() => {
-        Object.keys(user).forEach((key) => (user[key] = "")); // 사용자 상태 초기화
+        Object.keys(user).forEach((key) => (user[key] = "")); 
         alert("로그아웃되었습니다. 감사합니다.");
-        router.push("/"); // 홈 화면으로 이동
+        router.push("/login");
       })
       .catch((err) => {
         console.error(err);
