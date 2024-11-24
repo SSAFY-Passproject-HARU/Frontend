@@ -22,11 +22,6 @@
 
       <!-- 집 설명 -->
       <div class="house-description">
-        <h2 class="title">둘이 살기 좋은 집</h2>
-        <p>집 설명!!!!!!!!!!!!!!!!!!!!!!!!</p>
-      </div>
-      <!-- 집 설명 -->
-      <div class="house-description">
         <ul>
           <li>건물 이름: 장안뉴시티(도시형)</li>
           <li>방 종류: 아파트</li>

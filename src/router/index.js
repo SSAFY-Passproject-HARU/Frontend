@@ -8,6 +8,8 @@ import HouseDetailView from "../views/HouseDetailView.vue";
 import NewsView from "@/views/NewsView.vue";
 import LandingView from "@/views/LandingView.vue";
 import RoomRegisterView from "@/views/RoomRegisterView.vue";
+import FavoriteRoomView from "@/views/FavoriteRoomView.vue";
+import RoomDetailView from "@/views/RoomDetailView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +58,16 @@ const router = createRouter({
       path: "/room/register/:aptSeq",
       name: "RoomRegister",
       component: RoomRegisterView,
+    },
+    {
+      path: "/room/favorite",
+      name: "FavoriteRoom",
+      component: FavoriteRoomView,
+    },
+    {
+      path: "/room/detail/:roomId",
+      name: "RoomDetail",
+      component: RoomDetailView,
     },
   ],
 });
