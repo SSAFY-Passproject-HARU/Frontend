@@ -4,7 +4,6 @@
       <img class="icon" src="@/assets/images/icons/icon-glass.png" alt="search" />
       <input type="text" placeholder="매물 검색" class="custom-input" />
     </div>
-    <div class="mypage"></div>
     <router-link to="/mypage" class="mypage">
       <img class="mypage" src="@/assets/images/icons/icon-mypage.png" alt="mypage" />
     </router-link>
@@ -24,7 +23,7 @@ export default {
   left: 240px; /* NavBar의 너비(240px)만큼 오른쪽으로 밀어서 배치 */
   right: 0; /* 오른쪽 끝에 맞춤 */
   height: 96px;
-  padding-right: 48px;
+  padding: 20px 48px 20px 0;
   display: flex;
   align-items: center;
   gap: 112px;
