@@ -3,18 +3,35 @@ import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
 import NewsCard from "@/components/news/NewsCard.vue";
 import { useNewsStore } from "@/stores/news";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const newsStore = useNewsStore();
+const observerTarget = ref(null); // Intersection Observer 타겟
 
-// 초기 데이터 로드
+// Intersection Observer 설정
+const createObserver = () => {
+  const observer = new IntersectionObserver(
+    async ([entry]) => {
+      if (entry.isIntersecting && !newsStore.state.isLoading) {
+        await newsStore.fetchNews();
+      }
+    },
+    { root: null, rootMargin: "0px", threshold: 0.1 }
+  );
+  if (observerTarget.value) {
+    observer.observe(observerTarget.value);
+  }
+};
+
+// 초기 데이터 로드 및 Observer 설정
 onMounted(async () => {
   await newsStore.fetchNews();
+  createObserver();
 });
 </script>
 
 <template>
-    <div class="news">
+  <div class="news">
     <NavBar />
     <div class="main">
       <TopBar />
@@ -29,7 +46,8 @@ onMounted(async () => {
             :news="news"
           />
         </div>
-        <!-- <div class="page">1 2 3 4 5</div> -->
+        <!-- Intersection Observer 타겟 -->
+        <div ref="observerTarget" class="observer-target"></div>
       </div>
     </div>
   </div>
@@ -79,6 +97,10 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 20px 20px;
+}
+
+.observer-target {
+  height: 1px; /* 화면 끝에 감지용 작은 영역 */
 }
 
 /* .page {
