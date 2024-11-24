@@ -1,19 +1,60 @@
 <script>
+import { useUserStore } from "@/stores/user";
+
 export default {
   data() {
     return {
       sidoOptions: [],
       gugunOptions: [],
       dongOptions: [],
-      selectedSido: "", // { code, name } 구조
-      selectedGugun: "", // { code, name } 구조
-      selectedDong: "", // { code, name } 구조
+      selectedSido: "",
+      selectedGugun: "",
+      selectedDong: "",
+      formData: {
+        id: "",
+        nickname: "",
+        email: "",
+        password: "",
+        name: "",
+        role: "",
+      },
     };
   },
   mounted() {
     this.fetchSidoData();
   },
   methods: {
+    // Pinia store 가져오기
+    registerUser() {
+      const userStore = useUserStore();
+
+      // 비밀번호 확인 검증
+      if (this.formData.password !== this.formData.passwordConfirm) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+
+      // 관심 지역 정보 추가
+      const userData = {
+        ...this.formData,
+        sido: this.selectedSido?.name || "",
+        gugun: this.selectedGugun?.name || "",
+        dong: this.selectedDong?.name || "",
+      };
+
+      console.log(userData);
+
+      // 회원가입 요청
+      userStore
+        .register(userData)
+        .then(() => {
+          alert("회원가입이 성공적으로 완료되었습니다.");
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("회원가입 중 오류가 발생했습니다1.");
+        });
+    },
     fetchSidoData() {
       this.sendRequest("sido", "*00000000");
     },
@@ -38,11 +79,6 @@ export default {
         this.fetchDongData(regcode);
       } else {
         this.resetDong();
-      }
-    },
-    onDongChange() {
-      if (this.selectedSido && this.selectedGugun && this.selectedDong) {
-        this.fetchHouses();
       }
     },
     resetGugunAndDong() {
@@ -101,29 +137,64 @@ export default {
     />
     <div class="signup-container">
       <div class="signup-logo">HARU</div>
-      <form class="signup-form">
+      <form class="signup-form" @submit.prevent="registerUser">
         <div class="label-container">
-          <label class="signup-label" for="signup-id">이름</label>
-          <input class="signup-id" id="signup-id" placeholder="아이디" />
+          <label class="signup-label" for="signup-id">아이디</label>
+          <input
+            class="signup-id"
+            id="signup-id"
+            v-model="formData.id"
+            placeholder="아이디"
+          />
+        </div>        
+        <div class="label-container">
+          <label class="signup-label" for="signup-name">이름</label>
+          <input
+            class="signup-name"
+            id="signup-name"
+            v-model="formData.name"
+            placeholder="이름"
+          />
         </div>
         <div class="label-container">
           <label class="signup-label" for="signup-nickname">닉네임</label>
           <div class="signup-nickname-container">
-            <input class="signup-nickname" id="signup-nickname" placeholder="닉네임" />
-            <button class="signup-nickname-confirm">중복 확인</button>
+            <input
+              class="signup-nickname"
+              id="signup-nickname"
+              v-model="formData.nickname"
+              placeholder="닉네임"
+            />
           </div>
         </div>
         <div class="label-container">
-          <label class="signup-label" for="signup-nickname">이메일</label>
-          <input class="signup-email" id="signup-email" placeholder="이메일" />
+          <label class="signup-label" for="signup-email">이메일</label>
+          <input
+            class="signup-email"
+            id="signup-email"
+            v-model="formData.email"
+            placeholder="이메일"
+          />
         </div>
         <div class="label-container">
           <label class="signup-label" for="signup-pw">비밀번호</label>
-          <input class="signup-pw" id="signup-pw" placeholder="비밀번호" />
+          <input
+            class="signup-pw"
+            id="signup-pw"
+            v-model="formData.password"
+            type="password"
+            placeholder="비밀번호"
+          />
         </div>
         <div class="label-container">
           <label class="signup-label" for="signup-pwconfirm">비밀번호 확인</label>
-          <input class="signup-pwconfirm" id="signup-pwconfirm" placeholder="비밀번호 확인" />
+          <input
+            class="signup-pwconfirm"
+            id="signup-pwconfirm"
+            v-model="formData.passwordConfirm"
+            type="password"
+            placeholder="비밀번호 확인"
+          />
         </div>
         <div class="label-container">
           <label class="signup-label">관심 지역</label>
@@ -140,7 +211,7 @@ export default {
                 {{ gugun.name }}
               </option>
             </select>
-            <select v-model="selectedDong" @change="onDongChange">
+            <select v-model="selectedDong">
               <option value="">동 선택</option>
               <option v-for="dong in dongOptions" :key="dong.code" :value="dong">
                 {{ dong.name }}
@@ -148,7 +219,30 @@ export default {
             </select>
           </div>
         </div>
-        <router-link to="/signup" class="signup-button">회원가입</router-link>
+        <div class="label-container">
+          <label class="signup-label">회원 유형</label>
+          <div class="signup-user-type-container">
+            <label>
+              <input
+                type="radio"
+                name="userType"
+                value="normal"
+                v-model="formData.userType"
+              />
+              일반 회원
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="userType"
+                value="agent"
+                v-model="formData.userType"
+              />
+              중개인
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="signup-button">회원가입</button>
       </form>
     </div>
   </div>
@@ -229,6 +323,7 @@ export default {
 }
 
 .signup-id,
+.signup-name,
 .signup-email,
 .signup-pw,
 .signup-pwconfirm {
@@ -282,7 +377,7 @@ select {
   width: 142px;
   border: 1px solid var(--gray3);
   border-radius: 10px;
-  padding: 20px 25px;
+  padding: 20px 25px;  
   color: var(--gray3);
   font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
@@ -290,6 +385,13 @@ select {
 
 option {
   color: var(--gray1);
+}
+
+.signup-user-type-container {
+  width: 464px;
+  padding: 26px 0;
+  display: flex;
+  gap: 60px;
 }
 
 .signup-button {

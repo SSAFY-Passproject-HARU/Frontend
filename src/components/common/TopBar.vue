@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { useUserStore } from "@/stores/member";
+import { useUserStore } from "@/stores/user";
 
 export default {
   name: "TopBar",
