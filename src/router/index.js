@@ -3,7 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MypageView from "@/views/MypageView.vue";
 import SignupView from "@/views/SignupView.vue";
-import HouseRegisterView from "@/views/HouseRegisterView.vue";
+import RoomRegisterView from "@/views/RoomRegisterView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,9 +44,9 @@ const router = createRouter({
       component: MypageView,
     },
     {
-      path: "/house/register",
-      name: "HouseRegister",
-      component: HouseRegisterView,
+      path: "/room/register/:aptSeq",
+      name: "RoomRegister",
+      component: RoomRegisterView,
     },
   ],
 });
