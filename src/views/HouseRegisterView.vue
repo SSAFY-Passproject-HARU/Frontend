@@ -61,10 +61,13 @@ export default {
 * {
   font-family: var(--font-family-primary);
 }
+
 h1 {
   margin: 0;
   font-size: 28px;
   font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-title);
+  color: var(--primary);
   margin-bottom: 36px;
 }
 </style>

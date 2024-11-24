@@ -57,7 +57,7 @@ import TopBar from "@/components/common/TopBar.vue";
 }
 
 .top-menu {
-  width: calc(360px * 3 + 40px);
+  width: calc(260px * 4 + 60px);
   display: flex;
   justify-content: space-between;
   margin-bottom: 36px;
@@ -66,7 +66,7 @@ import TopBar from "@/components/common/TopBar.vue";
 .title {
   color: var(--primary);
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-header);
+  font-size: var(--font-size-title);
   font-weight: var(--font-weight-bold);
 }
 
@@ -75,17 +75,14 @@ button {
   background-color: transparent;
   color: var(--primary);
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
 }
 
 .house-list {
-  position: absolute;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 36px 20px;
-  overflow-y: auto;
 }
 </style>

@@ -186,12 +186,15 @@ export default {
 * {
   font-family: var(--font-family-primary);
 }
+
 h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: var(--font-size-title);
   font-weight: var(--font-weight-bold);
+  color: var(--primary);
   margin-bottom: 36px;
 }
+
 select {
   margin: 20px;
   border: solid 1px var(--gray8);
@@ -201,23 +204,28 @@ select {
   font-size: 16px;
   width: 180px;
 }
+
 ul, li {
   list-style: none; 
   margin: 0; 
   padding: 0; 
 }
+
 li {
   margin: 0 10px;
   border-bottom: 1px solid var(--gray8);
 }
+
 li:last-child {
   border-bottom: none;
 }
+
 .map-view {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 95px);
 }
+
 .view {
   flex-grow: 1;
   display: flex;
@@ -227,28 +235,34 @@ li:last-child {
   border-radius: 10px;
   border: 1px solid var(--secondary-border);
 }
+
 .view-header {
   display: flex;
   align-items: center;
   height: 72px;
   border-bottom: 1px solid var(--gray8);
 }
+
 .main-content {
   display: flex;
   flex-grow: 1;
   overflow: hidden;
 }
+
 .list {
   width: 340px;
   min-width: 340px;
   overflow-y: auto;
 }
+
 .list::-webkit-scrollbar {
   display: none;
 }
+
 .map {
   flex-grow: 1;
 }
+
 .no-data {
   text-align: center;
   color: var(--gray8);
