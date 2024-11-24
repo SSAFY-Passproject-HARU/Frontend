@@ -4,16 +4,55 @@
       <img class="icon" src="@/assets/images/icons/icon-glass.png" alt="search" />
       <input type="text" placeholder="매물 검색" class="custom-input" />
     </div>
-    <div class="mypage"></div>
-    <router-link to="/mypage" class="mypage">
-      <img class="mypage" src="@/assets/images/icons/icon-mypage.png" alt="mypage" />
-    </router-link>
+    <div class="mypage-wrapper">
+      <img
+        class="mypage"
+        src="@/assets/images/icons/icon-mypage.png"
+        alt="mypage"
+        @click="toggleDropdown"
+      />
+      <div v-if="isDropdownVisible" class="dropdown">
+        <ul>
+          <li @click="goToMyPage">마이페이지</li>
+          <li @click="logout">로그아웃</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { useUserStore } from "@/stores/member";
+
 export default {
   name: "TopBar",
+  data() {
+    return {
+      isDropdownVisible: false, // 드롭다운 표시 여부
+    };
+  },
+  methods: {
+    // 드롭다운 토글
+    toggleDropdown() {
+      this.isDropdownVisible = !this.isDropdownVisible;
+    },
+    // 마이페이지 이동
+    goToMyPage() {
+      this.$router.push("/mypage");
+    },
+    // 로그아웃 처리
+    async logout() {
+      const store = useUserStore(); // Pinia store 사용
+      try {
+        await store.logout(); // 로그아웃 API 호출
+        alert("로그아웃되었습니다. 감사합니다.");
+        this.$router.push("/login"); // 로그인 페이지로 이동
+      } catch (error) {
+        console.error("로그아웃 실패:", error);
+        alert("로그아웃 중 문제가 발생했습니다.");
+      }
+    },
+  },
 };
 </script>
 
@@ -21,13 +60,14 @@ export default {
 .topbar {
   position: sticky;
   top: 0;
-  left: 240px; /* NavBar의 너비(240px)만큼 오른쪽으로 밀어서 배치 */
-  right: 0; /* 오른쪽 끝에 맞춤 */
+  left: 240px;
+  right: 0;
   height: 96px;
-  padding-right: 48px;
+  padding: 20px 48px 20px 0;
   display: flex;
   align-items: center;
   gap: 112px;
+  z-index: 100;
 }
 
 .searchbar {
@@ -61,8 +101,41 @@ export default {
   font-size: var(--font-size-base);
 }
 
+.mypage-wrapper {
+  position: relative;
+}
+
 .mypage {
   width: 40px;
   height: 40px;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 120px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  padding-top: 5px;
+}
+
+.dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background-color: #f0f0f0;
 }
 </style>

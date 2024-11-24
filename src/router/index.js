@@ -3,6 +3,10 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MypageView from "@/views/MypageView.vue";
 import SignupView from "@/views/SignupView.vue";
+import MapView from "../views/MapView.vue";
+import HouseDetailView from "../views/HouseDetailView.vue";
+import NewsView from "@/views/NewsView.vue";
+import LandingView from "@/views/LandingView.vue";
 import RoomRegisterView from "@/views/RoomRegisterView.vue";
 
 const router = createRouter({
@@ -12,6 +16,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    {
+      path: "/landing",
+      name: "landing",
+      component: LandingView,
     },
     {
       path: "/login",
@@ -24,24 +33,24 @@ const router = createRouter({
       component: SignupView,
     },
     {
-      path: "/about",
-      name: "about",
-      component: () => import("../views/AboutView.vue"),
+      path: "/mypage",
+      name: "mypage",
+      component: MypageView,
+    },
+    {
+      path: "/news",
+      name: "news",
+      component: NewsView,
     },
     {
       path: "/map",
       name: "map",
-      component: () => import("../views/MapView.vue"),
+      component: MapView,
     },
     {
       path: '/house/detail/:aptSeq',
       name: 'housedetail',
-      component: () => import('../views/HouseDetailView.vue'),
-    },
-    {
-      path: "/mypage",
-      name: "Mypage",
-      component: MypageView,
+      component: HouseDetailView,
     },
     {
       path: "/room/register/:aptSeq",

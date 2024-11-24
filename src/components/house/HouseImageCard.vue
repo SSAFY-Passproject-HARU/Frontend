@@ -17,19 +17,20 @@
 <style scoped>
 * {
   font-family: var(--font-family-primary);
+  box-sizing: border-box;
 }
 
 .card {
-  width: 360px;
-  height: 360px;
+  width: 260px;
+  height: 260px;
   position: relative;
-  background-color: white;
+  border-radius: 10px;
   display: block;
 }
 
 .house-image {
-  width: 360px;
-  height: 360px;
+  width: 260px;
+  height: 260px;
   object-fit: cover;
   border-radius: 10px;
   display: block;
