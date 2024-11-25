@@ -11,27 +11,32 @@ const houseList = ref([]);
 const userStore = useUserStore();
 
 watchEffect(() => {
-  if (userStore.user.sido && userStore.user.gugun && userStore.user.dong) {
-    fetchHouseList();
+  if (
+    userStore.user.sido &&
+    userStore.user.gugun &&
+    userStore.user.dong &&
+    userStore.user.userId
+  ) {
+    fetchRecommendationList();
   }
 });
 
-// 매물 데이터를 가져오는 함수
-const fetchHouseList = async () => {
+// 유저 선호 매물을 가져오는 함수
+const fetchRecommendationList = async () => {
   try {
-    if (userStore.user.sido && userStore.user.gugun && userStore.user.dong) {
-      console.log("아ㅑ아아아아ㅏㅇ22222");
-      const response = await axios.get("http://localhost:8080/room/detail", {
+    if (userStore.user.userId) {
+      console.log("추천 매물 데이터를 가져오는 중...");
+      const response = await axios.get(`http://localhost:8080/recommendation/${userStore.user.userId}`, {
         params: {
           sido: userStore.user.sido,
           gugun: userStore.user.gugun,
-          dong: userStore.user.dong
+          dong: userStore.user.dong,
         },
-      }); // API 경로 수정
-      houseList.value = response.data; // 받은 데이터를 houseList에 저장
+      });
+      houseList.value = response.data; // 추천 매물 데이터를 houseList에 저장
     }
   } catch (error) {
-    console.error("매물 데이터를 가져오는 데 실패했습니다:", error);
+    console.error("추천 매물 데이터를 가져오는 데 실패했습니다:", error);
   }
 };
 
