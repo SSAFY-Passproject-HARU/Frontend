@@ -28,8 +28,6 @@ const handleLogin = async (event) => {
   event.preventDefault(); 
   try {
     await userStore.login(userId.value, password.value); 
-    console.log("userId.value:" + userId.value);
-    console.log("password.value:" + password.value);
 
     // 아이디 저장 체크박스 상태에 따른 쿠키 처리
     if (saveIdChecked.value) {

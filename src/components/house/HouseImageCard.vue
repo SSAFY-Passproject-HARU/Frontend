@@ -7,10 +7,10 @@ const router = useRouter(); // router 객체 생성
 
 // props로 받은 매물 정보
 const props = defineProps({
-  roomId: {
-    type: Number,
-    required: true,
-  },
+  house: {
+    type: Object, // 전달받은 데이터 타입 정의 (Object)
+    required: true // 필수 여부 설정
+  }
 });
 
 // hover 상태 관리
@@ -32,9 +32,9 @@ const overlayInfo = ref({
 const getAptInfo = async () => {
   try {
     const responseAptName = await axios.get(
-      `http://localhost:8080/room/detail/${props.roomId}/apt-name`
+      `http://localhost:8080/room/detail/${props.house.roomId}/apt-name`
     );
-    const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${props.roomId}`);
+    const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${props.house.roomId}`);
 
     overlayInfo.value = {
       aptNm: responseAptName.data,
