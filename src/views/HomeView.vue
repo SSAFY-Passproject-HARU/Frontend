@@ -56,7 +56,9 @@ import TopBar from "@/components/common/TopBar.vue";
 }
 
 .top-menu {
-  width: calc(260px * 4 + 60px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 36px;
 }
 
@@ -80,6 +82,7 @@ button {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 36px 20px;
+  gap: 45px;
+  
 }
 </style>

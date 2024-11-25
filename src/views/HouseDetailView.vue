@@ -4,69 +4,91 @@
     <div class="main">
       <TopBar />
       <div class="detail-view content">
-      <div class="view">
-      <!-- 집의 메인 이미지 -->
-      <img
-        class="main-image"
-        src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
-        alt="House Image"
-      />
+        <div class="view">
+          <!-- 집의 메인 이미지 -->
+          <img
+            class="main-image"
+            src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
+            alt="House Image"
+          />
 
-      <!-- 기본 정보 -->
-      <div class="house-information" v-if="houseDetails">
-        <p class="house-type">아파트</p>
-        <h1 class="price">{{ houseDetails[0].aptName }}</h1>
-        <p class="area">공급 81.5m² | 방 3, 욕실 2</p>
-        <p>Apartment Seq: {{ aptSeq }}</p>
-      </div>
+          <!-- 기본 정보 -->
+          <div class="house-information" v-if="houseDetails">
+            <p class="house-type">아파트</p>
+            <h1 class="price">{{ houseDetails[0].aptName }}</h1>
+          </div>
 
-      <!-- 집 설명 -->
-      <div class="house-description">
-        <ul>
-          <li>건물 이름: 장안뉴시티(도시형)</li>
-          <li>방 종류: 아파트</li>
-          <li>해당층/건물층: 14층 / 14층</li>
-          <li>전용 면적 / 공급 면적: 17.63m² / 27.73m²</li>
-          <li>방 수 / 욕실 수: 1개 / 1개</li>
-        </ul>
-      </div>
+          <!-- 매물 리스트 -->
+          <div class="room-list" v-if="roomList">
+            <h2>매물 리스트</h2>
+            <ul>
+              <li
+                v-for="room in roomList"
+                :key="room.roomId"
+                @click="goToRoomDetail(room.roomId)"
+              >
+                <h3>{{ room.title }}</h3>
+                <p>{{ formatPrice(room.price) }} 원</p>
+              </li>
+            </ul>
+          </div>
+          <!-- 매물이 없을 때 표시할 메시지 -->
+          <div class="no-room-list" v-else>
+            <h2>매물이 없습니다.</h2>
+          </div>
 
-      <!-- 편의시설 -->
-      <div class="amenities" v-if="houseDetails">
-        <h2>편의시설</h2>
-        <FacilityMap class="component" :latitude="houseDetails[0].latitude" :longitude="houseDetails[0].longitude"/>
-      </div>
+          <!-- 집 설명 -->
+          <div class="house-description">
+            <ul>
+              <li>건물 이름: 장안뉴시티(도시형)</li>
+              <li>방 종류: 아파트</li>
+              <li>해당층/건물층: 14층 / 14층</li>
+              <li>전용 면적 / 공급 면적: 17.63m² / 27.73m²</li>
+              <li>방 수 / 욕실 수: 1개 / 1개</li>
+            </ul>
+          </div>
 
-      <!-- 로드뷰 -->
-      <div class="road-view" v-if="houseDetails">
-        <h2>로드뷰</h2>
-        <RoadView class="component" :latitude="houseDetails[0].latitude" :longitude="houseDetails[0].longitude"/>
-      </div>
+          <!-- 편의시설 -->
+          <div class="amenities" v-if="houseDetails">
+            <h2>편의시설</h2>
+            <FacilityMap
+              class="component"
+              :latitude="houseDetails[0].latitude"
+              :longitude="houseDetails[0].longitude"
+            />
+          </div>
 
-      <!-- 거래금액 그래프 -->
-      <div class="price-graph" v-if="houseDetails">
-        <h2>거래금액 그래프</h2>
-        <TransactionGraph class="component" :aptSeq="houseDetails[0].aptSeq"/>
-      </div>
+          <!-- 로드뷰 -->
+          <div class="road-view" v-if="houseDetails">
+            <h2>로드뷰</h2>
+            <RoadView
+              class="component"
+              :latitude="houseDetails[0].latitude"
+              :longitude="houseDetails[0].longitude"
+            />
+          </div>
 
-      <!-- 문의 버튼 -->
-      <div class="contact-buttons">
-        <button class="btn-contact">연락처</button>
-        <button class="btn-like">관심 목록에 추가</button>
+          <!-- 거래금액 그래프 -->
+          <div class="price-graph" v-if="houseDetails">
+            <h2>거래금액 그래프</h2>
+            <TransactionGraph
+              class="component"
+              :aptSeq="houseDetails[0].aptSeq"
+            />
+          </div>
+        </div>
       </div>
-      </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
-import RoadView from '@/components/map/RoadView.vue';
-import FacilityMap from '@/components/map/FacilityMap.vue';
-import TransactionGraph from '@/components/house/TransactionGraph.vue';
+import RoadView from "@/components/map/RoadView.vue";
+import FacilityMap from "@/components/map/FacilityMap.vue";
+import TransactionGraph from "@/components/house/TransactionGraph.vue";
 
 export default {
   name: "HouseDetailView",
@@ -75,25 +97,42 @@ export default {
     return {
       aptSeq: null,
       houseDetails: null, // 아파트 상세 정보
+      roomList: null // 매물 리스트 데이터
     };
   },
   mounted() {
     this.aptSeq = this.$route.params.aptSeq;
     this.fetchHouseDetails(); // 데이터 로드
+    this.fetchRoomList(); // 매물 리스트 로드
   },
   methods: {
     fetchHouseDetails() {
       // API로 아파트 상세 정보 요청
-      axios.get(`http://localhost:8080/home/list/${this.aptSeq}`)
+      axios
+        .get(`http://localhost:8080/home/list/${this.aptSeq}`)
         .then((response) => {
           // 성공적으로 데이터를 받으면 houseDetails에 할당
           this.houseDetails = response.data;
           console.log(response.data);
         })
         .catch((error) => {
-          console.error('Error fetching house details:', error);
+          console.error("Error fetching house details:", error);
         });
     },
+    // 매물 리스트 불러오기
+    fetchRoomList() {
+      axios.get(`http://localhost:8080/room/list/${this.aptSeq}`)
+        .then((response) => { this.roomList = response.data; })
+        .catch((error) => { console.error('Error:', error); });
+    },
+    // 상세 페이지로 이동
+    goToRoomDetail(roomId) {
+      this.$router.push(`/room/detail/${roomId}`);
+    },
+    // 가격 포맷팅 (예: 1000 -> 1,000 원)
+    formatPrice(price) {
+      return new Intl.NumberFormat().format(price);
+    }
   },
 };
 </script>
@@ -175,7 +214,8 @@ li {
 .view > div > *:last-child {
   margin-bottom: 36px;
 }
-.view > div > p, .view > div > ul {
+.view > div > p,
+.view > div > ul {
   font-size: 18px;
 }
 .house-type {
@@ -185,4 +225,38 @@ li {
   display: block;
   width: 100%;
 }
+
+.room-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-list li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid var(--gray8);
+  border-radius: 8px;
+  background-color: var(--white);
+  transition: box-shadow 0.3s;
+}
+
+.room-list li:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-list h3 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+
+.room-list p {
+  font-size: 18px;
+  color: var(--gray1);
+  margin: 0;
+}
+
 </style>

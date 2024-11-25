@@ -19,11 +19,10 @@ import "./styles/variables.scss";
   display: flex;
   justify-content: center;
   height: 100vh; /* 화면 전체 높이를 차지 */
-  background-color: skyblue;
 }
 
 .inner-container {
-  width: 1440px;
+  width: 1800px;
   display: flex;
   position: relative;
   background-color: white;
