@@ -1,5 +1,15 @@
 <script setup>
 import "./styles/variables.scss";
+
+import { useUserStore } from "@/stores/user";
+import { onMounted } from "vue";
+
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.getUserData(); // 페이지 로드 시 사용자 데이터 가져오기
+});
+
 </script>
 
 <template>
