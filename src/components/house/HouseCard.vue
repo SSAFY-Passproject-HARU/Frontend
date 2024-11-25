@@ -3,7 +3,7 @@
     <router-link :to="`/house/detail/${house.aptSeq}`" class="card-link">
       <div class="card-image">
         <img
-          src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
+          src="https://i.pinimg.com/736x/f9/6a/cd/f96acdb0334d9ab59a731966abee0a0d.jpg"
           alt="House Image"
         />
       </div>
@@ -15,8 +15,7 @@
         <!-- 추가 정보 -->
         <div class="additional-info">
           <p class="room-type">아파트</p>
-          <p class="floor-size">3층, 20.00m²</p>
-          <p class="maintenance-fee">{{ house.gugun }} {{ house.dong }} {{ house.jibun }}</p>
+          <p class="location">{{ house.gugun }} {{ house.dong }} {{ house.jibun }}</p>
         </div>
       </div>
     </router-link>

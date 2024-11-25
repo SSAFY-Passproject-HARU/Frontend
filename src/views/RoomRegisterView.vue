@@ -37,6 +37,67 @@
               />
             </div>
             <div>
+              <label for="area">면적:</label>
+              <input
+                type="number"
+                id="area"
+                v-model="RoomDto.area"
+                required
+                placeholder="면적을 입력하세요"
+              />
+            </div>
+            <div>
+              <label for="roomCount">방 개수:</label>
+              <input
+                type="number"
+                id="roomCount"
+                v-model="RoomDto.roomCount"
+                required
+                placeholder="방 개수를 입력하세요"
+              />
+            </div>
+            <div>
+              <label for="bathroomCount">욕실 개수:</label>
+              <input
+                type="number"
+                id="bathroomCount"
+                v-model="RoomDto.bathroomCount"
+                required
+                placeholder="욕실 개수를 입력하세요"
+              />
+            </div>
+            <div>
+              <label for="roomType">매물 종류:</label>
+              <input
+                type="text"
+                id="roomType"
+                v-model="RoomDto.roomType"
+                required
+                placeholder="매물 종류를 입력하세요"
+              />
+            </div>
+            <div>
+              <label for="roomFloor">매물 층:</label>
+              <input
+                type="number"
+                id="roomFloor"
+                v-model="RoomDto.roomFloor"
+                required
+                placeholder="매물 층을 입력하세요"
+              />
+            </div>
+            <div>
+              <label for="totalFloors">건물 전체 층:</label>
+              <input
+                type="number"
+                id="totalFloors"
+                v-model="RoomDto.totalFloors"
+                required
+                placeholder="건물 전체 층을 입력하세요"
+              />
+            </div>
+
+            <div>
               <label for="upfile" class="form-label">파일:</label>
               <input
                 type="file"
@@ -74,6 +135,12 @@ export default {
         price: "",
         aptSeq: "",
         favorite: 0,
+        area: "", // 새 필드
+        roomCount: "", // 새 필드
+        bathroomCount: "", // 새 필드
+        roomType: "", // 새 필드
+        roomFloor: "", // 새 필드
+        totalFloors: "", // 새 필드
       },
       files: [], // 업로드할 파일
     };
@@ -92,7 +159,11 @@ export default {
 
     // 폼 유효성 검사
     validateForm() {
-      if (!this.RoomDto.title || !this.RoomDto.description || !this.RoomDto.price) {
+      if (
+        !this.RoomDto.title ||
+        !this.RoomDto.description ||
+        !this.RoomDto.price
+      ) {
         alert("모든 필드를 입력해주세요.");
         return false;
       }
@@ -106,33 +177,36 @@ export default {
     // 폼 제출
     async submitForm() {
       // 유효성 검사
-      console.log(11);
       if (!this.validateForm()) return;
-      console.log(22);
       const formData = new FormData();
 
       // RoomDto를 FormData에 추가
       this.RoomDto.userId = "user"; // 실제 사용자 ID로 대체 필요
 
-      formData.append('roomDto', new Blob([JSON.stringify(this.RoomDto)], { type: 'application/json' }))
+      formData.append(
+        "roomDto",
+        new Blob([JSON.stringify(this.RoomDto)], { type: "application/json" })
+      );
       this.files.forEach((file) => {
-        formData.append('files', file)
-      })
+        formData.append("files", file);
+      });
 
-      console.log(33);
       try {
-        console.log(this.RoomDto);
-        console.log(this.RoomDto.title);
-        const response = await axios.post(`${this.root}/room/register`, formData, this.files, {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        });
+        const response = await axios.post(
+          `${this.root}/room/register`,
+          formData,
+          this.files,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
+        );
 
         console.log("Response:", response);
 
         if (response.data.success) {
           alert("게시글이 작성되었습니다.");
-          this.$router.push("/map"); // 작성 후 페이지 이동
+          this.$router.push("/house/detail/" + this.RoomDto.aptSeq); // 작성 후 페이지 이동
         } else {
           alert("게시글 작성에 실패했습니다.");
         }

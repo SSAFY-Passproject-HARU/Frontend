@@ -11,25 +11,25 @@
                         alt="House Image" />
 
                     <!-- 기본 정보 -->
-                    <div class="house-information" v-if="houseDetails">
+                    <div class="house-information" v-if="roomData">
                         <p class="house-type">아파트</p>
-                        <h1 class="price">{{ houseDetails.aptName }}</h1>
+                        <h1 class="apt-name">{{ houseDetails.aptName }}</h1>
+                        <h2 class="price">매매 {{ roomData.price }}원</h2>
                     </div>
 
                     <!-- 집 설명 -->
                     <div class="house-description" v-if="roomData">
                         <h2 class="title">{{ roomData.title }}</h2>
                         <p>{{ roomData.description }}</p>
-                        <p>price: {{ roomData.price }}</p>
                     </div>
                     <!-- 집 설명 -->
-                    <div class="house-description">
+                    <div class="house-description" v-if="roomData">
                         <ul>
-                            <li>건물 이름: 장안뉴시티(도시형)</li>
-                            <li>방 종류: 아파트</li>
-                            <li>해당층/건물층: 14층 / 14층</li>
-                            <li>전용 면적 / 공급 면적: 17.63m² / 27.73m²</li>
-                            <li>방 수 / 욕실 수: 1개 / 1개</li>
+                            <li>건물 이름: {{ houseDetails.aptName}}</li>
+                            <li>방 종류: {{ roomData.roomType}}</li>
+                            <li>해당층/건물층: {{ roomData.roomFloor }}층 / {{ roomData.totalFloors }}층</li>
+                            <li>면적: {{ roomData.area }}m²</li>
+                            <li>방 수 / 욕실 수: {{ roomData.roomCount }}개 / {{ roomData.bathroomCount }}개</li>
                         </ul>
                     </div>
 
@@ -93,18 +93,18 @@ export default {
         async fetchRoomData() {
             try {
                 // 1. 매물 기본 정보 요청
-                const roomResponse = await axios.get(`http://localhost:8080/room/detail/${this.roomId}`);
+                const roomResponse = await axios.get(`http://192.168.205.76:8080/room/detail/${this.roomId}`);
                 this.roomData = roomResponse.data;
 
-                console.log(this.roomData.aptSeq);
+                console.log("roomData: " + this.roomData);
 
                 // 2. aptSeq를 이용해 아파트 상세 정보 요청
-                const houseResponse = await axios.get(`http://localhost:8080/home/list/${this.roomData.aptSeq}`);
+                const houseResponse = await axios.get(`http://192.168.205.76:8080/home/list/${this.roomData.aptSeq}`);
                 this.houseDetails = houseResponse.data[0]; // 응답이 배열일 경우 첫 번째 객체 사용
                 console.log(this.houseDetails.aptName);
 
                 // 3. 이미지 정보 요청
-                const imageResponse = await axios.get(`http://localhost:8080/room/images/${this.roomId}`);
+                const imageResponse = await axios.get(`http://192.168.205.76:8080/room/images/${this.roomId}`);
                 this.roomImages = imageResponse.data; // 이미지 정보 저장
                 console.log(this.roomImages);
 
@@ -124,7 +124,7 @@ export default {
                     userId: this.userId, // 로그인된 사용자 ID (현재 하드코딩 상태)
                     roomId: this.roomId
                 };
-                await axios.post('http://localhost:8080/room/like', likeData);
+                await axios.post('http://192.168.205.76:8080/room/like', likeData);
                 alert('관심 목록에 추가되었습니다!');
             } catch (error) {
                 console.error('Error liking room:', error);
