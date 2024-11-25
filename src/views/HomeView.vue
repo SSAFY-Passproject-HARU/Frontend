@@ -23,7 +23,9 @@ const fetchHouseList = async () => {
       console.log("아ㅑ아아아아ㅏㅇ22222");
       const response = await axios.get("http://localhost:8080/room/detail", {
         params: {
-          location: `${userStore.user.sido} ${userStore.user.guguns} ${userStore.user.dong}`,
+          sido: userStore.user.sido,
+          gugun: userStore.user.gugun,
+          dong: userStore.user.dong
         },
       }); // API 경로 수정
       houseList.value = response.data; // 받은 데이터를 houseList에 저장
