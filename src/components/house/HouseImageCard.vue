@@ -1,6 +1,9 @@
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router"; // router 추가
+
+const router = useRouter(); // router 객체 생성
 
 // props로 받은 매물 정보
 const props = defineProps({
@@ -28,13 +31,11 @@ const overlayInfo = ref({
 // 아파트 정보 가져오기
 const getAptInfo = async () => {
   try {
-    // roomId에 맞는 아파트 이름과 상세 정보 가져오기
     const responseAptName = await axios.get(
       `http://localhost:8080/room/detail/${props.roomId}/apt-name`
     );
     const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${props.roomId}`);
 
-    // 받은 데이터를 overlayInfo에 저장
     overlayInfo.value = {
       aptNm: responseAptName.data,
       price: responseRoomDetail.data.price,
@@ -50,6 +51,11 @@ const getAptInfo = async () => {
   }
 };
 
+// 클릭 시 상세 페이지로 이동
+const goToDetailPage = () => {
+  router.push(`/room/detail/${props.roomId}`);
+};
+
 // 컴포넌트가 마운트될 때 아파트 정보 가져오기
 onMounted(() => {
   getAptInfo();
@@ -57,7 +63,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="card" @mouseover="isHovered = true" @mouseleave="isHovered = false">
+  <div
+    class="card"
+    @mouseover="isHovered = true"
+    @mouseleave="isHovered = false"
+    @click="goToDetailPage" 
+  >
     <div class="card-image">
       <img
         src="https://image.hanssem.com/hsimg/upload/homeIdea/2023/02/27/1677477451098_0.jpg"
