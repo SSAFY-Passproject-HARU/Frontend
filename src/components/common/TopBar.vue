@@ -64,7 +64,7 @@ export default {
   padding: 20px 48px 20px 0;
   display: flex;
   align-items: center;
-  gap: 112px;
+  justify-content: space-between; /* 왼쪽과 오른쪽으로 배치 */
   z-index: 100;
 }
 

@@ -7,21 +7,19 @@
                 <div class="view">
                     <!-- 집의 메인 이미지 -->
                     <img class="main-image"
-                        src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
+                        :src="mainImageUrl"
                         alt="House Image" />
 
                     <!-- 기본 정보 -->
                     <div class="house-information" v-if="houseDetails">
                         <p class="house-type">아파트</p>
                         <h1 class="price">{{ houseDetails.aptName }}</h1>
-                        <p class="area">공급 81.5m² | 방 3, 욕실 2</p>
-                        <p>Apartment Seq: {{ houseDetails.aptSeq }}</p>
                     </div>
 
                     <!-- 집 설명 -->
                     <div class="house-description" v-if="roomData">
                         <h2 class="title">{{ roomData.title }}</h2>
-                        <p>user id: {{ roomData.description }}</p>
+                        <p>{{ roomData.description }}</p>
                         <p>price: {{ roomData.price }}</p>
                     </div>
                     <!-- 집 설명 -->
@@ -83,6 +81,8 @@ export default {
             roomId: null,
             roomData: null,       // 매물 기본 정보
             houseDetails: null, // 아파트 상세 정보
+            roomImages: [],
+            mainImageUrl: "", // 메인 이미지 URL 추가
         };
     },
     mounted() {
@@ -102,6 +102,18 @@ export default {
                 const houseResponse = await axios.get(`http://localhost:8080/home/list/${this.roomData.aptSeq}`);
                 this.houseDetails = houseResponse.data[0]; // 응답이 배열일 경우 첫 번째 객체 사용
                 console.log(this.houseDetails.aptName);
+
+                // 3. 이미지 정보 요청
+                const imageResponse = await axios.get(`http://localhost:8080/room/images/${this.roomId}`);
+                this.roomImages = imageResponse.data; // 이미지 정보 저장
+                console.log(this.roomImages);
+
+                // 메인 이미지 URL 설정
+                if (this.roomImages.length > 0) {
+                    // 예시로 첫 번째 이미지를 메인 이미지로 사용
+                    this.mainImageUrl = "/images/" + this.roomImages[0].imageUrl;
+                    console.log(this.mainImageUrl);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
