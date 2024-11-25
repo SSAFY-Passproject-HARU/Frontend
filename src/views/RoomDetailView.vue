@@ -22,6 +22,7 @@
                         <h2 class="title">{{ roomData.title }}</h2>
                         <p>{{ roomData.description }}</p>
                     </div>
+
                     <!-- 집 설명 -->
                     <div class="house-description" v-if="roomData">
                         <ul>
@@ -53,10 +54,10 @@
                         <TransactionGraph class="component" :aptSeq="houseDetails.aptSeq" />
                     </div>
 
-                    <!-- 문의 버튼 -->
+                    <!-- 관심 목록에 추가/삭제 버튼 -->
                     <div class="contact-buttons">
-                        <button class="btn-contact">연락처</button>
                         <button class="btn-like" @click="likeRoom">관심 목록에 추가</button>
+                        <button class="btn-remove" @click="removeFavorite">관심 목록에서 제거</button>
                     </div>
                 </div>
             </div>
@@ -83,6 +84,7 @@ export default {
             houseDetails: null, // 아파트 상세 정보
             roomImages: [],
             mainImageUrl: "", // 메인 이미지 URL 추가
+            isFavorite: false, // 관심 목록 여부
         };
     },
     mounted() {
@@ -93,18 +95,18 @@ export default {
         async fetchRoomData() {
             try {
                 // 1. 매물 기본 정보 요청
-                const roomResponse = await axios.get(`http://192.168.205.76:8080/room/detail/${this.roomId}`);
+                const roomResponse = await axios.get(`http://localhost:8080/room/detail/${this.roomId}`);
                 this.roomData = roomResponse.data;
 
                 console.log("roomData: " + this.roomData);
 
                 // 2. aptSeq를 이용해 아파트 상세 정보 요청
-                const houseResponse = await axios.get(`http://192.168.205.76:8080/home/list/${this.roomData.aptSeq}`);
+                const houseResponse = await axios.get(`http://localhost:8080/home/list/${this.roomData.aptSeq}`);
                 this.houseDetails = houseResponse.data[0]; // 응답이 배열일 경우 첫 번째 객체 사용
                 console.log(this.houseDetails.aptName);
 
                 // 3. 이미지 정보 요청
-                const imageResponse = await axios.get(`http://192.168.205.76:8080/room/images/${this.roomId}`);
+                const imageResponse = await axios.get(`http://localhost:8080/room/images/${this.roomId}`);
                 this.roomImages = imageResponse.data; // 이미지 정보 저장
                 console.log(this.roomImages);
 
@@ -118,22 +120,42 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
+
+        // 관심 목록에 추가
         async likeRoom() {
             try {
                 const likeData = {
                     userId: this.userId, // 로그인된 사용자 ID (현재 하드코딩 상태)
                     roomId: this.roomId
                 };
-                await axios.post('http://192.168.205.76:8080/room/like', likeData);
+                await axios.post('http://localhost:8080/room/like', likeData);
+                this.isFavorite = true; // 관심 목록에 추가된 상태로 변경
                 alert('관심 목록에 추가되었습니다!');
             } catch (error) {
                 console.error('Error liking room:', error);
                 alert('관심 목록 추가에 실패했습니다.');
             }
-        }
+        },
+
+        // 관심 목록에서 제거
+        async removeFavorite() {
+            try {
+                const likeData = {
+                    userId: this.userId, // 로그인된 사용자 ID (현재 하드코딩 상태)
+                    roomId: this.roomId
+                };
+                await axios.delete('http://localhost:8080/room/removelike', { data: likeData });
+                this.isFavorite = false; // 관심 목록에서 제거된 상태로 변경
+                alert('관심 목록에서 제거되었습니다!');
+            } catch (error) {
+                console.error('Error removing favorite:', error);
+                alert('관심 목록에서 제거에 실패했습니다.');
+            }
+        },
     },
 };
 </script>
+
 
 
 <style scoped>
