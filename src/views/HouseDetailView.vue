@@ -9,7 +9,7 @@
           <img
             class="main-image"
             src="https://i.pinimg.com/enabled_lo_mid/736x/be/09/11/be091168f59095433d0befe8a451d6d3.jpg"
-            alt="House Image"
+            alt="House Image" style="display: none;"
           />
 
           <!-- 기본 정보 -->
@@ -35,17 +35,6 @@
           <!-- 매물이 없을 때 표시할 메시지 -->
           <div class="no-room-list" v-else>
             <h2>매물이 없습니다.</h2>
-          </div>
-
-          <!-- 집 설명 -->
-          <div class="house-description">
-            <ul>
-              <li>건물 이름: 장안뉴시티(도시형)</li>
-              <li>방 종류: 아파트</li>
-              <li>해당층/건물층: 14층 / 14층</li>
-              <li>전용 면적 / 공급 면적: 17.63m² / 27.73m²</li>
-              <li>방 수 / 욕실 수: 1개 / 1개</li>
-            </ul>
           </div>
 
           <!-- 편의시설 -->
@@ -75,6 +64,11 @@
               class="component"
               :aptSeq="houseDetails[0].aptSeq"
             />
+          </div>
+
+          <!-- 매물 등록 버튼 -->
+          <div class="register-button">
+            <button @click="goToRegisterPage">매물 등록</button>
           </div>
         </div>
       </div>
@@ -128,6 +122,9 @@ export default {
     // 상세 페이지로 이동
     goToRoomDetail(roomId) {
       this.$router.push(`/room/detail/${roomId}`);
+    },
+    goToRegisterPage() {
+      this.$router.push(`/room/register/${this.aptSeq}`);
     },
     // 가격 포맷팅 (예: 1000 -> 1,000 원)
     formatPrice(price) {
@@ -185,6 +182,7 @@ li {
   height: calc(100vh - 95px);
 }
 .view {
+  padding-top: 40px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;

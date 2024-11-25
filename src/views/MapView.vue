@@ -111,7 +111,6 @@ export default {
       axios
         .get("http://localhost:8080/home/list", { params })
         .then((response) => {
-          console.log(response.data);
           this.houses = response.data;
         })
         .catch((error) => {
@@ -250,8 +249,8 @@ li:last-child {
 }
 
 .list {
-  width: 340px;
-  min-width: 340px;
+  width: 270px;
+  min-width: 270px;
   overflow-y: auto;
 }
 
