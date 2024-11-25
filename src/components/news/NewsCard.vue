@@ -21,7 +21,7 @@ defineProps({
 }
 
 .card {
-  width: 260px;  /* 224 */
+  width: 260px; /* 224 */
   height: 180px;
   position: relative;
   background-color: white;
@@ -29,17 +29,6 @@ defineProps({
   display: flex;
   flex-direction: column;
   position: relative;
-}
-
-.card:after {
-  content: '';
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  height: 20%;
-  bottom: 0px;
-  background: linear-gradient(180deg, rgba(139,167,32,0) 0%, rgba(255,255,255,1) 100%);
-  pointer-events: none;
 }
 
 .news-title {
@@ -58,5 +47,4 @@ defineProps({
   color: var(--gray1);
   overflow-y: hidden;
 }
-
 </style>

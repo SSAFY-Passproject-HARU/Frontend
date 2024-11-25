@@ -1,12 +1,18 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, defineProps } from "vue";
 import axios from "axios";
 
-const isHovered = ref(false);
-const aptName = ref("");
-const roomDetail = ref("");
+// props로 받은 매물 정보
+const props = defineProps({
+  roomId: {
+    type: Number,
+    required: true,
+  },
+});
 
-const roomId = 1; // 예시 roomId
+// hover 상태 관리
+const isHovered = ref(false);
+
 // overlay에 표시할 정보를 객체로 관리
 const overlayInfo = ref({
   aptNm: "",
@@ -19,31 +25,32 @@ const overlayInfo = ref({
   totalFloors: "",
 });
 
-// 아파트 이름 가져오기
+// 아파트 정보 가져오기
 const getAptInfo = async () => {
   try {
-    const responseAptName = await axios.get(`http://localhost:8080/room/detail/${roomId}/apt-name`);
-    const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${roomId}`);
-    aptName.value = responseAptName.data;
-    roomDetail.value = responseRoomDetail.data;
+    // roomId에 맞는 아파트 이름과 상세 정보 가져오기
+    const responseAptName = await axios.get(
+      `http://localhost:8080/room/detail/${props.roomId}/apt-name`
+    );
+    const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${props.roomId}`);
 
-    // roomDetail이 정상적으로 받아지면 overlayInfo에 저장
+    // 받은 데이터를 overlayInfo에 저장
     overlayInfo.value = {
-      aptNm: aptName.value,
-      price: roomDetail.value.price,
-      area: roomDetail.value.area,
-      roomCount: roomDetail.value.roomCount,
-      bathroomCount: roomDetail.value.bathroomCount,
-      roomType: roomDetail.value.roomType,
-      roomFloor: roomDetail.value.roomFloor,
-      totalFloors: roomDetail.value.totalFloors,
+      aptNm: responseAptName.data,
+      price: responseRoomDetail.data.price,
+      area: responseRoomDetail.data.area,
+      roomCount: responseRoomDetail.data.roomCount,
+      bathroomCount: responseRoomDetail.data.bathroomCount,
+      roomType: responseRoomDetail.data.roomType,
+      roomFloor: responseRoomDetail.data.roomFloor,
+      totalFloors: responseRoomDetail.data.totalFloors,
     };
   } catch (error) {
     console.error("Error fetching apartment name or detail:", error);
   }
 };
 
-// 컴포넌트가 마운트될 때 아파트 이름을 가져옴
+// 컴포넌트가 마운트될 때 아파트 정보 가져오기
 onMounted(() => {
   getAptInfo();
 });

@@ -51,7 +51,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -113,7 +113,7 @@ export default {
   position: absolute;
   top: 50px;
   right: 0;
-  width: 120px;
+  width: 125px;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;

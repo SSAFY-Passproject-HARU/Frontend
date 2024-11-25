@@ -140,21 +140,11 @@ export default {
       <form class="signup-form" @submit.prevent="registerUser">
         <div class="label-container">
           <label class="signup-label" for="signup-id">아이디</label>
-          <input
-            class="signup-id"
-            id="signup-id"
-            v-model="formData.id"
-            placeholder="아이디"
-          />
-        </div>        
+          <input class="signup-id" id="signup-id" v-model="formData.id" placeholder="아이디" />
+        </div>
         <div class="label-container">
           <label class="signup-label" for="signup-name">이름</label>
-          <input
-            class="signup-name"
-            id="signup-name"
-            v-model="formData.name"
-            placeholder="이름"
-          />
+          <input class="signup-name" id="signup-name" v-model="formData.name" placeholder="이름" />
         </div>
         <div class="label-container">
           <label class="signup-label" for="signup-nickname">닉네임</label>
@@ -221,23 +211,13 @@ export default {
         </div>
         <div class="label-container">
           <label class="signup-label">회원 유형</label>
-          <div class="signup-user-type-container">
+          <div class="signup-role-container">
             <label>
-              <input
-                type="radio"
-                name="userType"
-                value="normal"
-                v-model="formData.userType"
-              />
+              <input type="radio" name="role" value="normal" v-model="formData.role" />
               일반 회원
             </label>
             <label>
-              <input
-                type="radio"
-                name="userType"
-                value="agent"
-                v-model="formData.userType"
-              />
+              <input type="radio" name="role" value="agent" v-model="formData.role" />
               중개인
             </label>
           </div>
@@ -377,7 +357,7 @@ select {
   width: 142px;
   border: 1px solid var(--gray3);
   border-radius: 10px;
-  padding: 20px 25px;  
+  padding: 20px 25px;
   color: var(--gray3);
   font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
@@ -387,7 +367,7 @@ option {
   color: var(--gray1);
 }
 
-.signup-user-type-container {
+.signup-role-container {
   width: 464px;
   padding: 26px 0;
   display: flex;
