@@ -3,8 +3,10 @@ import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
 import NewsCard from "@/components/news/NewsCard.vue";
 import { useNewsStore } from "@/stores/news";
+import { useUserStore } from "@/stores/user";
 import { onMounted, ref } from "vue";
 
+const userStore = useUserStore();
 const newsStore = useNewsStore();
 const observerTarget = ref(null); // Intersection Observer 타겟
 
@@ -37,14 +39,13 @@ onMounted(async () => {
       <TopBar />
       <div class="content">
         <div class="top-menu">
-          <h1 class="title">‘{{ newsStore.state.query }}' 지역 뉴스</h1>
+          <h1 class="title">
+            ‘{{ userStore.user.sido }} {{ userStore.user.gugun }} {{ userStore.user.dong }}' 지역
+            뉴스
+          </h1>
         </div>
         <div class="house-list">
-          <NewsCard 
-            v-for="(news, index) in newsStore.state.newsList"
-            :key="index"
-            :news="news"
-          />
+          <NewsCard v-for="(news, index) in newsStore.state.newsList" :key="index" :news="news" />
         </div>
         <!-- Intersection Observer 타겟 -->
         <div ref="observerTarget" class="observer-target"></div>
@@ -64,6 +65,17 @@ main {
   flex-direction: column;
   position: relative;
   width: calc(100% - 240px);
+}
+
+.main:after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 10%;
+  bottom: 0px;
+  background: linear-gradient(180deg, rgba(139, 167, 32, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
 }
 
 .content {

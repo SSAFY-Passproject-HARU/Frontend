@@ -1,7 +1,42 @@
 <script setup>
+import { ref, onMounted, watchEffect } from "vue";
+import axios from "axios";
 import HouseImageCard from "@/components/house/HouseImageCard.vue";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
+import { useUserStore } from "@/stores/user";
+
+// 매물 리스트 데이터를 저장할 ref
+const houseList = ref([]);
+const userStore = useUserStore();
+
+watchEffect(() => {
+  if (userStore.user.sido && userStore.user.gugun && userStore.user.dong) {
+    fetchHouseList();
+  }
+});
+
+// 매물 데이터를 가져오는 함수
+const fetchHouseList = async () => {
+  try {
+    if (userStore.user.sido && userStore.user.gugun && userStore.user.dong) {
+      console.log("아ㅑ아아아아ㅏㅇ22222");
+      const response = await axios.get("http://localhost:8080/room/detail", {
+        params: {
+          location: `${userStore.user.sido} ${userStore.user.guguns} ${userStore.user.dong}`,
+        },
+      }); // API 경로 수정
+      houseList.value = response.data; // 받은 데이터를 houseList에 저장
+    }
+  } catch (error) {
+    console.error("매물 데이터를 가져오는 데 실패했습니다:", error);
+  }
+};
+
+// 컴포넌트가 마운트될 때 데이터 호출
+onMounted(() => {
+  fetchHouseList();
+});
 </script>
 
 <template>
@@ -14,15 +49,8 @@ import TopBar from "@/components/common/TopBar.vue";
           <h1 class="title">맞춤 추천 매물</h1>
         </div>
         <div class="house-list">
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
-          <HouseImageCard />
+          <!-- houseList 배열을 순회하여 HouseImageCard 컴포넌트를 렌더링 -->
+          <HouseImageCard v-for="house in houseList" :key="house.roomId" :house="house" />
         </div>
       </div>
     </div>
@@ -40,6 +68,17 @@ import TopBar from "@/components/common/TopBar.vue";
   flex-direction: column;
   position: relative;
   width: calc(100% - 240px);
+}
+
+.main:after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 10%;
+  bottom: 0px;
+  background: linear-gradient(180deg, rgba(139, 167, 32, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
 }
 
 .content {
