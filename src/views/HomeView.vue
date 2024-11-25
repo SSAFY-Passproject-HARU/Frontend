@@ -12,7 +12,6 @@ import TopBar from "@/components/common/TopBar.vue";
       <div class="content">
         <div class="top-menu">
           <h1 class="title">맞춤 추천 매물</h1>
-          <button>알고리즘 업데이트하기</button>
         </div>
         <div class="house-list">
           <HouseImageCard />
@@ -58,8 +57,6 @@ import TopBar from "@/components/common/TopBar.vue";
 
 .top-menu {
   width: calc(260px * 4 + 60px);
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 36px;
 }
 
