@@ -20,6 +20,16 @@ export const useUserStore = defineStore("user", () => {
     role: "",
   });
 
+  // 사용자 데이터 로드 함수 (새로고침 시 활용)
+  async function fetchUser() {
+    try {
+      const res = await userHttp.get(""); // 사용자 정보 요청 API 호출
+      Object.assign(user, res.data); // 사용자 데이터 상태 반영
+    } catch (err) {
+      console.error("사용자 데이터를 가져오는 중 오류 발생:", err);
+    }
+  }
+
   // 로그인
   function login(id, password) {
     userHttp
@@ -115,6 +125,7 @@ export const useUserStore = defineStore("user", () => {
 
   return {
     user,
+    fetchUser,
     login,
     logout,
     register,
