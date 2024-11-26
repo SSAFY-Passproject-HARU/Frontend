@@ -37,7 +37,7 @@ const handleLogin = async (event) => {
     }
 
     alert("로그인에 성공했습니다."); // 로그인 성공 알림
-    router.push("/"); // 홈 페이지로 이동
+    router.push("/home"); // 홈 페이지로 이동
   } catch (error) {
     loginFailMessage.value = "아이디 또는 비밀번호가 잘못되었습니다."; // 로그인 실패 메시지
   }

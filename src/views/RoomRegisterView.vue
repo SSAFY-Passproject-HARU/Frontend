@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/stores/user";
 import axios from "axios";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
@@ -149,6 +150,10 @@ export default {
     // URL의 파라미터에서 aptSeq 값을 받아오기
     this.RoomDto.aptSeq = this.$route.params.aptSeq || "";
     console.log("aptSeq:", this.RoomDto.aptSeq);
+    const userStore = useUserStore();
+    this.RoomDto.userId = userStore.user.id;
+    console.log(userStore.user.id);
+    
   },
   methods: {
     // 파일 업로드 처리
@@ -180,8 +185,6 @@ export default {
       if (!this.validateForm()) return;
       const formData = new FormData();
 
-      // RoomDto를 FormData에 추가
-      this.RoomDto.userId = "user"; // 실제 사용자 ID로 대체 필요
 
       formData.append(
         "roomDto",

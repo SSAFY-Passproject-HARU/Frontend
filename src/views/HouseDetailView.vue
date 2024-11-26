@@ -68,7 +68,7 @@
 
           <!-- 매물 등록 버튼 -->
           <div class="register-button">
-            <button @click="goToRegisterPage">매물 등록</button>
+            <button @click="goToRegisterPage" class="btn-register">매물 등록</button>
           </div>
         </div>
       </div>
@@ -134,7 +134,6 @@ export default {
 };
 </script>
 
-  
 <style scoped>
 .detail {
   width: 100%;
@@ -165,22 +164,27 @@ export default {
   font-family: var(--font-family-primary);
   font-size: var(--font-weight-regular);
 }
+
 h1 {
   font-size: 32px;
   font-weight: var(--font-weight-bold);
 }
+
 h2 {
   font-size: 24px;
   font-weight: var(--font-weight-bold);
 }
+
 li {
   margin-bottom: 10px;
 }
+
 .detail-view {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 95px);
 }
+
 .view {
   padding-top: 40px;
   flex-grow: 1;
@@ -190,35 +194,44 @@ li {
   border-radius: 10px;
   border: 1px solid var(--secondary-border);
 }
+
 .view > * {
   margin-left: 36px;
   margin-right: 36px;
   margin-bottom: 36px;
 }
+
 .view > div {
   border-bottom: 1px solid var(--gray8); /* 기본적으로 모든 자식 요소에 하단 테두리 */
 }
+
 .view > div:last-child {
   border-bottom: none; /* 마지막 자식 요소는 하단 테두리 제외 */
 }
+
 .main-image {
   margin: 36px;
   height: 60vh;
   object-fit: cover;
 }
+
 .view > div > * {
   margin-bottom: 15px;
 }
+
 .view > div > *:last-child {
   margin-bottom: 36px;
 }
+
 .view > div > p,
 .view > div > ul {
   font-size: 18px;
 }
+
 .house-type {
   color: var(--gray1);
 }
+
 .component {
   display: block;
   width: 100%;
@@ -255,6 +268,32 @@ li {
   font-size: 18px;
   color: var(--gray1);
   margin: 0;
+}
+
+.register-button {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-register {
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-register:focus {
+  outline: none;
 }
 
 </style>

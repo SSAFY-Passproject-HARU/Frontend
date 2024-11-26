@@ -11,43 +11,43 @@
       </router-link>
       <hr />
       <router-link 
-        to="/"         
+        to="/home"         
         class="nav-item"
-        :class="{ active: route.path === '/' }"
+        :class="{ active: route.path === '/home' }"
       >
         맞춤 추천
       </router-link>
       <router-link
-        to="types"         
+        to="/types"         
         class="nav-item"
         :class="{ active: route.path === '/types' }"
       >
         종류별 추천
       </router-link>
       <router-link 
-        to="map"         
+        to="/map"         
         class="nav-item"
         :class="{ active: route.path === '/map' }"
       >
         지도로 보기
       </router-link>
       <router-link
-        to="news"          
+        to="/news"          
         class="nav-item"
         :class="{ active: route.path === '/news' }"
       >
         관심 지역 뉴스
       </router-link>
       <router-link 
-        to="favorites"         
+        to="/room/favorite"         
         class="nav-item"
-        :class="{ active: route.path === '/favorites' }"
+        :class="{ active: route.path === '/room/favorite' }"
       >
         찜한 매물
       </router-link>
       <hr />
       <router-link
-        to="community"          
+        to="/community"          
         class="nav-item"
         :class="{ active: route.path === '/community' }"
       >
