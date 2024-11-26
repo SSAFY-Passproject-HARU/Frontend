@@ -34,16 +34,11 @@ const roomImage = ref("");
 const getAptInfo = async () => {
   try {
     // roomId에 맞는 아파트 이름과 상세 정보 가져오기
+    console.log(props.roomId);
     const responseAptName = await axios.get(
       `http://localhost:8080/room/detail/${props.roomId}/apt-name`
     );
     const responseRoomDetail = await axios.get(`http://localhost:8080/room/detail/${props.roomId}`);
-    const responseRoomImages = await axios.get(`http://localhost:8080/room/images/${props.roomId}`);
-
-    // 첫 번째 이미지 URL을 roomImage에 저장
-    if (responseRoomImages.data && responseRoomImages.data.length > 0) {
-      roomImage.value = "/images/" + responseRoomImages.data[0].imageUrl; // 이미지 URL을 적절한 형식으로 설정
-    }
 
     // 받은 데이터를 overlayInfo에 저장
     overlayInfo.value = {
@@ -56,6 +51,14 @@ const getAptInfo = async () => {
       roomFloor: responseRoomDetail.data.roomFloor,
       totalFloors: responseRoomDetail.data.totalFloors,
     };
+    console.log(overlayInfo.value.aptNm);
+
+    const responseRoomImages = await axios.get(`http://localhost:8080/room/images/${props.roomId}`);
+
+    // 첫 번째 이미지 URL을 roomImage에 저장
+    if (responseRoomImages.data && responseRoomImages.data.length > 0) {
+      roomImage.value = "/images/" + responseRoomImages.data[0].imageUrl; // 이미지 URL을 적절한 형식으로 설정
+    }
   } catch (error) {
     console.error("Error fetching apartment name or detail:", error);
   }
@@ -67,21 +70,21 @@ const goToDetailPage = () => {
 };
 
 // favorite 아이콘 클릭 시 실행될 함수
-const handleFavoriteClick = async() => {
+const handleFavoriteClick = async () => {
   console.log("Favorite icon clicked!");
   try {
-    const userStore = useUserStore();            
+    const userStore = useUserStore();
     const likeData = {
-                    userId: userStore.user.id, // 로그인된 사용자 ID (현재 하드코딩 상태)
-                    roomId: props.roomId
-                };
-                await axios.delete('http://localhost:8080/room/removelike', { data: likeData });
-                alert('관심 목록에서 제거되었습니다!');
-                window.location.reload();
-            } catch (error) {
-                console.error('Error removing favorite:', error);
-                alert('관심 목록에서 제거에 실패했습니다.');
-            }
+      userId: userStore.user.id, // 로그인된 사용자 ID (현재 하드코딩 상태)
+      roomId: props.roomId,
+    };
+    await axios.delete("http://localhost:8080/room/removelike", { data: likeData });
+    alert("관심 목록에서 제거되었습니다!");
+    window.location.reload();
+  } catch (error) {
+    console.error("Error removing favorite:", error);
+    alert("관심 목록에서 제거에 실패했습니다.");
+  }
 };
 
 // 컴포넌트가 마운트될 때 아파트 정보 가져오기
@@ -99,17 +102,12 @@ onMounted(() => {
   >
     <div class="card-image">
       <!-- 이미지가 존재하는 경우, 받아온 첫 번째 이미지를 표시 -->
+      <img v-if="roomImage" :src="roomImage" alt="House Image" class="house-image" />
       <img
-        v-if="roomImage"
-        :src="roomImage"
-        alt="House Image"
-        class="house-image"
-      />
-      <img 
-        src="@/assets/images/icons/icon-star-yellow.png" 
-        alt="favorite" 
-        class="favorite" 
-        @click.stop="handleFavoriteClick" 
+        src="@/assets/images/icons/icon-star-yellow.png"
+        alt="favorite"
+        class="favorite"
+        @click.stop="handleFavoriteClick"
       />
       <!-- hover 시 overlay 표시 -->
       <div class="overlay" v-if="isHovered">
