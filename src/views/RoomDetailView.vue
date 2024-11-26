@@ -14,7 +14,7 @@
                     <div class="house-information" v-if="roomData">
                         <p class="house-type">아파트</p>
                         <h1 class="apt-name">{{ houseDetails.aptName }}</h1>
-                        <h2 class="price">매매 {{ formatPrice(roomData.price) }}원</h2>
+                        <h2 class="price">매매 {{ formatPrice(roomData.price) }}만원</h2>
                         <button class="btn-like" @click="likeRoom">관심 목록에 추가</button>
                     </div>
 
