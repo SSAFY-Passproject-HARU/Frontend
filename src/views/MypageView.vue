@@ -46,12 +46,12 @@ onMounted(() => {
           <div class="mypage-content">
             <div class="mypage-info">
               <div class="mypage-info-top">
-                <div class="mypage-nickname">자몽</div>
-                <div class="mypage-role">일반 회원</div>
+                <div class="mypage-nickname">{{ userStore.user.nickname }}</div>
+                <div class="mypage-role">{{ userStore.user.role === 'normal' ? '일반 회원' : '중개인' }}</div>
               </div>
-              <div class="mypage-email">99yunsun@naver.com</div>
+              <div class="mypage-email">{{ userStore.user.email }}</div>
             </div>
-            <router-link to="@/editProfile" class="mypage-edit-button">회원정보 수정</router-link>
+            <router-link to="/editProfile" class="mypage-edit-button">회원정보 수정</router-link>
           </div>
         </div>
         <div class="mypage-favorite">
