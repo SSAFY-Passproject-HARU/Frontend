@@ -42,11 +42,6 @@ const handleLogin = async (event) => {
     loginFailMessage.value = "아이디 또는 비밀번호가 잘못되었습니다."; // 로그인 실패 메시지
   }
 };
-
-// 페이지 이동 함수
-const navigateTo = (path) => {
-  router.push({ path });
-};
 </script>
 
 <template>
