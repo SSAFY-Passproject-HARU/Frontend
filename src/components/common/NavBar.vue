@@ -2,13 +2,6 @@
   <div class="navbar">
     <router-link to="/" class="logo">HARU</router-link>
     <div class="nav-list">
-      <router-link 
-        to="/notice"         
-        class="nav-item"
-        :class="{ active: route.path === '/notice' }"
-      >
-        공지사항
-      </router-link>
       <hr />
       <router-link 
         to="/home"         
@@ -16,13 +9,6 @@
         :class="{ active: route.path === '/home' }"
       >
         맞춤 추천
-      </router-link>
-      <router-link
-        to="/types"         
-        class="nav-item"
-        :class="{ active: route.path === '/types' }"
-      >
-        종류별 추천
       </router-link>
       <router-link 
         to="/map"         

@@ -36,10 +36,12 @@ export const useUserStore = defineStore("user", () => {
       .post("/login", { id, password })
       .then(() => {
         getUserData(); // 로그인 후 사용자 데이터 로드
+        router.push("/home");
       })
       .catch((err) => {
         console.error(err);
         alert("로그인 실패! 아이디와 비밀번호를 확인해주세요.");
+        window.location.reload(); // 페이지 새로고침
       });
   }
 

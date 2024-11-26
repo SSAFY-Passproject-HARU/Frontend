@@ -25,23 +25,15 @@ onMounted(() => {
 
 // 로그인 처리 함수
 const handleLogin = async (event) => {
-  event.preventDefault(); 
-  try {
-    await userStore.login(userId.value, password.value); 
+  await userStore.login(userId.value, password.value); 
 
-    // 아이디 저장 체크박스 상태에 따른 쿠키 처리
-    if (saveIdChecked.value) {
-      document.cookie = `userId=${userId.value}; max-age=31536000`; // 1년 유지
-    } else {
-      document.cookie = `userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC`; // 쿠키 삭제
-    }
-
-    alert("로그인에 성공했습니다."); // 로그인 성공 알림
-    router.push("/home"); // 홈 페이지로 이동
-  } catch (error) {
-    loginFailMessage.value = "아이디 또는 비밀번호가 잘못되었습니다."; // 로그인 실패 메시지
+  // 아이디 저장 체크박스 상태에 따른 쿠키 처리
+  if (saveIdChecked.value) {
+    document.cookie = `userId=${userId.value}; max-age=31536000`; // 1년 유지
+  } else {
+    document.cookie = `userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC`; // 쿠키 삭제
   }
-};
+} 
 </script>
 
 <template>
@@ -55,7 +47,7 @@ const handleLogin = async (event) => {
     <div class="login-container">
       <div class="login-content">
         <div class="login-logo">HARU</div>
-        <form class="login-form" @submit="handleLogin">
+        <form class="login-form" @submit.prevent="handleLogin">
           <!-- 아이디 입력 -->
           <input
             class="login-id"
@@ -81,10 +73,6 @@ const handleLogin = async (event) => {
               />
               아이디 저장
             </div>
-            <!-- 비밀번호 찾기 링크 -->
-            <router-link to="/passwordreset" class="login-passwordreset">
-              비밀번호 찾기
-            </router-link>
           </div>
           <!-- 로그인 버튼 -->
           <button class="login-button" type="submit">로그인</button>

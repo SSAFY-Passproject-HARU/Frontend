@@ -11,6 +11,7 @@ import RoomRegisterView from "@/views/RoomRegisterView.vue";
 import FavoriteRoomView from "@/views/FavoriteRoomView.vue";
 import RoomDetailView from "@/views/RoomDetailView.vue"
 import CommunityView from "@/views/CommunityView.vue";
+import EditProfileView from "@/views/EditProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,6 +75,11 @@ const router = createRouter({
       path: "/community",
       name: "community",
       component: CommunityView,
+    },
+    {
+      path: "/editProfile",
+      name: "editProfile",
+      component: EditProfileView,
     },
   ],
 });
