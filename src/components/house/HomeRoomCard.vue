@@ -2,7 +2,15 @@
 import { ref, defineProps, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router"; // router 추가
+import starYellow from "@/assets/images/icons/icon-star-yellow.png";
+import starGray from "@/assets/images/icons/icon-star-gray.png";
+import { useUserStore } from "@/stores/user";
+
 const router = useRouter(); // router 객체 생성
+const userStore = useUserStore();
+const isHovered = ref(false);
+const isFavorite = ref(false);
+const roomImage = ref("");
 
 // props로 받은 매물 정보
 const props = defineProps({
@@ -10,10 +18,11 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  like: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-// hover 상태 관리
-const isHovered = ref(false);
 
 // overlay에 표시할 정보를 객체로 관리
 const overlayInfo = ref({
@@ -26,9 +35,6 @@ const overlayInfo = ref({
   roomFloor: "",
   totalFloors: "",
 });
-
-// 이미지 URL을 담을 변수
-const roomImage = ref("");
 
 // 아파트 정보 가져오기
 const getAptInfo = async () => {
@@ -51,7 +57,6 @@ const getAptInfo = async () => {
       roomFloor: responseRoomDetail.data.roomFloor,
       totalFloors: responseRoomDetail.data.totalFloors,
     };
-    console.log(overlayInfo.value.aptNm);
 
     const responseRoomImages = await axios.get(`http://localhost:8080/room/images/${props.roomId}`);
 
@@ -69,26 +74,34 @@ const goToDetailPage = () => {
   router.push(`/room/detail/${props.roomId}`);
 };
 
-// favorite 아이콘 클릭 시 실행될 함수
 const handleFavoriteClick = async () => {
   console.log("Favorite icon clicked!");
   try {
-    const userStore = useUserStore();
     const likeData = {
-      userId: userStore.user.id, // 로그인된 사용자 ID (현재 하드코딩 상태)
+      userId: userStore.user.id, // 로그인된 사용자 ID
       roomId: props.roomId,
     };
-    await axios.delete("http://localhost:8080/room/removelike", { data: likeData });
-    alert("관심 목록에서 제거되었습니다!");
-    window.location.reload();
+
+    if (!isFavorite.value) {
+      // 즐겨찾기 추가
+      await axios.post("http://localhost:8080/room/like", likeData);
+      alert("관심 목록에 추가되었습니다!");
+      isFavorite.value = true; // 상태를 즐겨찾기된 상태로 변경
+    } else {
+      // 즐겨찾기 삭제
+      await axios.delete("http://localhost:8080/room/removelike", { data: likeData });
+      alert("관심 목록에서 제거되었습니다!");
+      isFavorite.value = false; // 상태를 즐겨찾기 해제 상태로 변경
+    }
   } catch (error) {
-    console.error("Error removing favorite:", error);
-    alert("관심 목록에서 제거에 실패했습니다.");
+    console.error("Error handling favorite:", error);
+    alert("작업에 실패했습니다. 다시 시도해주세요.");
   }
 };
 
 // 컴포넌트가 마운트될 때 아파트 정보 가져오기
 onMounted(() => {
+  isFavorite.value = props.like; // 초기 상태를 props의 like로 설정
   getAptInfo();
 });
 </script>
@@ -104,7 +117,7 @@ onMounted(() => {
       <!-- 이미지가 존재하는 경우, 받아온 첫 번째 이미지를 표시 -->
       <img v-if="roomImage" :src="roomImage" alt="House Image" class="house-image" />
       <img
-        src="@/assets/images/icons/icon-star-yellow.png"
+        :src="isFavorite ? starYellow : starGray"
         alt="favorite"
         class="favorite"
         @click.stop="handleFavoriteClick"
@@ -132,6 +145,7 @@ onMounted(() => {
   font-family: var(--font-family-primary);
   box-sizing: border-box;
 }
+
 .card {
   width: 260px;
   height: 260px;
@@ -139,6 +153,7 @@ onMounted(() => {
   border-radius: 10px;
   display: block;
 }
+
 .house-image {
   width: 260px;
   height: 260px;
@@ -146,6 +161,7 @@ onMounted(() => {
   border-radius: 10px;
   display: block;
 }
+
 .favorite {
   width: 32px;
   height: 32px;
@@ -155,6 +171,7 @@ onMounted(() => {
   z-index: 200;
   cursor: pointer;
 }
+
 .overlay {
   position: absolute;
   top: 0;
@@ -169,6 +186,7 @@ onMounted(() => {
   border-radius: 10px;
   z-index: 100;
 }
+
 .overlay-aptNm {
   color: #ffffff; /* 흰색 글씨 */
   font-size: 24px;
@@ -176,6 +194,7 @@ onMounted(() => {
   z-index: 200;
   margin-bottom: 20px;
 }
+
 .overlay-detail {
   color: var(--gray5);
   font-size: var(--font-size-medium);
@@ -183,6 +202,7 @@ onMounted(() => {
   z-index: 200;
   margin-bottom: 5px;
 }
+
 span {
   margin-bottom: 10px;
 }

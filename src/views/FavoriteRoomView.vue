@@ -8,14 +8,10 @@
         <div class="view">
           <div class="header">
             <span>내 매물 {{ rooms.length }}개</span>
-            <button class="select-button" style="display: none;">선택</button>
+            <button class="select-button" style="display: none">선택</button>
           </div>
           <div class="house-list">
-            <RoomCard 
-              v-for="room in rooms" 
-              :key="room.roomId" 
-              :roomId="room.roomId"
-            />
+            <RoomCard v-for="room in rooms" :key="room.roomId" :roomId="room.roomId" />
           </div>
         </div>
       </div>
@@ -23,39 +19,41 @@
   </div>
 </template>
 
-<script>
-import { useUserStore } from "@/stores/user";
+<script setup>
+import { ref, onMounted } from "vue";
 import axios from "axios";
+import { useUserStore } from "@/stores/user";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
 import RoomCard from "@/components/house/RoomCard.vue";
-export default {
-  name: "FavoriteRoomView",
-  components: { NavBar, TopBar, RoomCard },
-  data() {
-    return {
-      rooms: [], // 찜한 매물 데이터를 저장할 배열
-      userId: null,
-    };
-  },
-  methods: {
-    async fetchFavoriteRooms() {
-      try {
-        // userId를 기준으로 서버에서 찜한 매물 데이터 가져오기
-        const response = await axios.get(`http://localhost:8080/room/favorites?userId=${this.userId}`);
-        this.rooms = response.data; // 데이터 배열에 저장
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching favorite rooms:", error);
-      }
-    },
-  },
-  mounted() {
-    const userStore = useUserStore();
-    this.userId = userStore.user.id;
-    this.fetchFavoriteRooms(); // 컴포넌트가 마운트될 때 데이터 요청
-  },
-}
+
+// 유저 스토어 가져오기
+const userStore = useUserStore();
+
+// 상태 관리 변수
+const rooms = ref([]); // 찜한 매물 데이터를 저장할 배열
+const userId = ref(null);
+
+// 찜한 매물 데이터 가져오기 함수
+const fetchFavoriteRooms = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/room/favorites?userId=${userId.value}`);
+    rooms.value = response.data; // 데이터 배열에 저장
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error fetching favorite rooms:", error);
+  }
+};
+
+// 컴포넌트 마운트 시 유저 ID 설정 및 데이터 로드
+onMounted(() => {
+  userId.value = userStore.user?.id; // 유저 ID 설정
+  if (userId.value) {
+    fetchFavoriteRooms();
+  } else {
+    console.warn("User ID is not available.");
+  }
+});
 </script>
 
 <style scoped>
