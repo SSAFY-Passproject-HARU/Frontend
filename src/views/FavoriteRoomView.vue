@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useUserStore } from "@/stores/user";
 import NavBar from "@/components/common/NavBar.vue";
