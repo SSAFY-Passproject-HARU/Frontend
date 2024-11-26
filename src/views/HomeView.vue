@@ -10,29 +10,14 @@ import { useUserStore } from "@/stores/user";
 const houseList = ref([]);
 const userStore = useUserStore();
 
-watchEffect(() => {
-  if (
-    userStore.user.sido &&
-    userStore.user.gugun &&
-    userStore.user.dong &&
-    userStore.user.userId
-  ) {
-    fetchRecommendationList();
-  }
-});
-
 // 유저 선호 매물을 가져오는 함수
 const fetchRecommendationList = async () => {
   try {
-    if (userStore.user.userId) {
+    if (userStore.user.id) {
       console.log("추천 매물 데이터를 가져오는 중...");
-      const response = await axios.get(`http://localhost:8080/recommendation/${userStore.user.userId}`, {
-        params: {
-          sido: userStore.user.sido,
-          gugun: userStore.user.gugun,
-          dong: userStore.user.dong,
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:8080/room/recommendation/${userStore.user.id}`
+      );
       houseList.value = response.data; // 추천 매물 데이터를 houseList에 저장
     }
   } catch (error) {
@@ -40,9 +25,15 @@ const fetchRecommendationList = async () => {
   }
 };
 
+watchEffect(() => {
+  if (userStore.user.sido && userStore.user.gugun && userStore.user.dong && userStore.user.id) {
+    fetchRecommendationList();
+  }
+});
+
 // 컴포넌트가 마운트될 때 데이터 호출
 onMounted(() => {
-  fetchHouseList();
+  fetchRecommendationList();
 });
 </script>
 
@@ -129,6 +120,5 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 45px;
-  
 }
 </style>

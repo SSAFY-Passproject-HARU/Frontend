@@ -6,10 +6,12 @@ import { onMounted } from "vue";
 
 const userStore = useUserStore();
 
-onMounted(() => {
-  userStore.getUserData(); // 페이지 로드 시 사용자 데이터 가져오기
+onMounted(async () => {
+  await userStore.getUserData(); // 페이지 로드 시 사용자 데이터 가져오기
+  if (!userStore.user.id) {
+    router.push("/login");
+  }
 });
-
 </script>
 
 <template>
