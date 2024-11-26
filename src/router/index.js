@@ -9,12 +9,11 @@ import NewsView from "@/views/NewsView.vue";
 import LandingView from "@/views/LandingView.vue";
 import RoomRegisterView from "@/views/RoomRegisterView.vue";
 import FavoriteRoomView from "@/views/FavoriteRoomView.vue";
-<<<<<<< HEAD
 import RoomDetailView from "@/views/RoomDetailView.vue"
 import CommunityView from "@/views/CommunityView.vue";
 import EditProfileView from "@/views/EditProfileView.vue";
 import CreatePostView from "@/views/CreatePostView.vue";
->>>>>>> main
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
