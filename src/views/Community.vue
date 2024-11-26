@@ -82,7 +82,6 @@ export default {
   mounted() {
     const userStore = useUserStore();
     this.userId = userStore.user.id; // 로그인된 사용자 ID 설정
-    this.userId = "user";
   },
 };
 </script>
