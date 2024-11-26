@@ -14,7 +14,8 @@
                     <div class="house-information" v-if="roomData">
                         <p class="house-type">아파트</p>
                         <h1 class="apt-name">{{ houseDetails.aptName }}</h1>
-                        <h2 class="price">매매 {{ roomData.price }}원</h2>
+                        <h2 class="price">매매 {{ formatPrice(roomData.price) }}원</h2>
+                        <button class="btn-like" @click="likeRoom">관심 목록에 추가</button>
                     </div>
 
                     <!-- 집 설명 -->
@@ -53,12 +54,6 @@
                         <h2>거래금액 그래프</h2>
                         <TransactionGraph class="component" :aptSeq="houseDetails.aptSeq" />
                     </div>
-
-                    <!-- 관심 목록에 추가/삭제 버튼 -->
-                    <div class="contact-buttons">
-                        <button class="btn-like" @click="likeRoom">관심 목록에 추가</button>
-                        <button class="btn-remove" @click="removeFavorite">관심 목록에서 제거</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -66,6 +61,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/stores/user";
 import axios from 'axios';
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
@@ -78,7 +74,7 @@ export default {
     components: { NavBar, TopBar, RoadView, FacilityMap, TransactionGraph },
     data() {
         return {
-            userId: "user", // 나중에 바꿔야 함
+            userId: null,
             roomId: null,
             roomData: null,       // 매물 기본 정보
             houseDetails: null, // 아파트 상세 정보
@@ -89,6 +85,9 @@ export default {
     },
     mounted() {
         this.roomId = this.$route.params.roomId;
+        const userStore = useUserStore();
+        this.userId = userStore.user.id;
+        console.log(userStore.user.role);
         this.fetchRoomData(); // 매물 정보 로드
     },
     methods: {
@@ -98,23 +97,18 @@ export default {
                 const roomResponse = await axios.get(`http://localhost:8080/room/detail/${this.roomId}`);
                 this.roomData = roomResponse.data;
 
-                console.log("roomData: " + this.roomData);
-
                 // 2. aptSeq를 이용해 아파트 상세 정보 요청
                 const houseResponse = await axios.get(`http://localhost:8080/home/list/${this.roomData.aptSeq}`);
                 this.houseDetails = houseResponse.data[0]; // 응답이 배열일 경우 첫 번째 객체 사용
-                console.log(this.houseDetails.aptName);
 
                 // 3. 이미지 정보 요청
                 const imageResponse = await axios.get(`http://localhost:8080/room/images/${this.roomId}`);
                 this.roomImages = imageResponse.data; // 이미지 정보 저장
-                console.log(this.roomImages);
 
                 // 메인 이미지 URL 설정
                 if (this.roomImages.length > 0) {
                     // 예시로 첫 번째 이미지를 메인 이미지로 사용
                     this.mainImageUrl = "/images/" + this.roomImages[0].imageUrl;
-                    console.log(this.mainImageUrl);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -137,25 +131,13 @@ export default {
             }
         },
 
-        // 관심 목록에서 제거
-        async removeFavorite() {
-            try {
-                const likeData = {
-                    userId: this.userId, // 로그인된 사용자 ID (현재 하드코딩 상태)
-                    roomId: this.roomId
-                };
-                await axios.delete('http://localhost:8080/room/removelike', { data: likeData });
-                this.isFavorite = false; // 관심 목록에서 제거된 상태로 변경
-                alert('관심 목록에서 제거되었습니다!');
-            } catch (error) {
-                console.error('Error removing favorite:', error);
-                alert('관심 목록에서 제거에 실패했습니다.');
-            }
+        // 가격 포매팅 메서드
+        formatPrice(price) {
+            return price.toLocaleString(); // 쉼표를 추가하여 포매팅
         },
     },
 };
 </script>
-
 
 
 <style scoped>
@@ -260,5 +242,35 @@ li {
 .component {
     display: block;
     width: 100%;
+}
+
+/* 버튼 스타일 */
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.house-information {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 기본적으로 왼쪽 정렬 */
+}
+
+.btn-like {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    align-self: flex-end; /* 버튼을 오른쪽에 정렬 */
+}
+
+.btn-like:hover {
+    background-color: var(--primary-dark);
 }
 </style>

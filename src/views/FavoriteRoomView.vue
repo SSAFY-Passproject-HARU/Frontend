@@ -11,7 +11,7 @@
             <button class="select-button" style="display: none;">선택</button>
           </div>
           <div class="house-list">
-            <HouseImageCard 
+            <RoomCard 
               v-for="room in rooms" 
               :key="room.roomId" 
               :roomId="room.roomId"
@@ -24,23 +24,25 @@
 </template>
 
 <script>
+import { useUserStore } from "@/stores/user";
 import axios from "axios";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
-import HouseImageCard from "@/components/house/HouseImageCard.vue";
+import RoomCard from "@/components/house/RoomCard.vue";
 export default {
   name: "FavoriteRoomView",
-  components: { NavBar, TopBar, HouseImageCard },
+  components: { NavBar, TopBar, RoomCard },
   data() {
     return {
       rooms: [], // 찜한 매물 데이터를 저장할 배열
+      userId: null,
     };
   },
   methods: {
     async fetchFavoriteRooms() {
       try {
         // userId를 기준으로 서버에서 찜한 매물 데이터 가져오기
-        const response = await axios.get(`http://localhost:8080/room/favorites?userId=user`);
+        const response = await axios.get(`http://localhost:8080/room/favorites?userId=${this.userId}`);
         this.rooms = response.data; // 데이터 배열에 저장
         console.log(response.data);
       } catch (error) {
@@ -49,6 +51,8 @@ export default {
     },
   },
   mounted() {
+    const userStore = useUserStore();
+    this.userId = userStore.user.id;
     this.fetchFavoriteRooms(); // 컴포넌트가 마운트될 때 데이터 요청
   },
 }
