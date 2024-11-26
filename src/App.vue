@@ -10,7 +10,6 @@ const userStore = useUserStore();
 onMounted(async () => {
   await userStore.getUserData(); // 페이지 로드 시 사용자 데이터 가져오기
   const currentRoute = router.currentRoute.value.path; // 현재 경로 가져오기
-  console.log(currentRoute);
   if (!userStore.user.id && currentRoute !== "/") {
     router.push("/login"); // 로그인 페이지로 리다이렉트
   }
