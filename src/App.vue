@@ -3,6 +3,7 @@ import "./styles/variables.scss";
 
 import { useUserStore } from "@/stores/user";
 import { onMounted } from "vue";
+import router from "./router";
 
 const userStore = useUserStore();
 
