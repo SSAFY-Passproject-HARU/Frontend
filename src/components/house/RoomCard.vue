@@ -2,6 +2,7 @@
 import { ref, defineProps, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router"; // router 추가
+import { useUserStore } from "@/stores/user";
 const router = useRouter(); // router 객체 생성
 
 // props로 받은 매물 정보

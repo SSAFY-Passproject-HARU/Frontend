@@ -1,131 +1,147 @@
-<script>
+<script setup>
+import { ref, reactive, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 
-export default {
-  data() {
-    return {
-      sidoOptions: [],
-      gugunOptions: [],
-      dongOptions: [],
-      selectedSido: "",
-      selectedGugun: "",
-      selectedDong: "",
-      formData: {
-        id: "",
-        nickname: "",
-        email: "",
-        password: "",
-        name: "",
-        role: "",
-      },
-    };
-  },
-  mounted() {
-    this.fetchSidoData();
-  },
-  methods: {
-    // Pinia store 가져오기
-    registerUser() {
-      const userStore = useUserStore();
+const userStore = useUserStore();
 
-      // 비밀번호 확인 검증
-      if (this.formData.password !== this.formData.passwordConfirm) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-      }
+// 상태 변수 정의
+const sidoOptions = ref([]);
+const gugunOptions = ref([]);
+const dongOptions = ref([]);
+const selectedSido = ref("");
+const selectedGugun = ref("");
+const selectedDong = ref("");
 
-      // 관심 지역 정보 추가
-      const userData = {
-        ...this.formData,
-        sido: this.selectedSido?.name || "",
-        gugun: this.selectedGugun?.name || "",
-        dong: this.selectedDong?.name || "",
-      };
+const formData = reactive({
+  id: "",
+  nickname: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+  name: "",
+  role: "",
+});
 
-      console.log(userData);
-
-      // 회원가입 요청
-      userStore
-        .register(userData)
-        .then(() => {
-          alert("회원가입이 성공적으로 완료되었습니다.");
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("회원가입 중 오류가 발생했습니다1.");
-        });
-    },
-    fetchSidoData() {
-      this.sendRequest("sido", "*00000000");
-    },
-    fetchGugunData(regcode) {
-      this.sendRequest("gugun", regcode);
-    },
-    fetchDongData(regcode) {
-      this.sendRequest("dong", regcode);
-    },
-    onSidoChange() {
-      if (this.selectedSido) {
-        const regcode = this.selectedSido.code.substr(0, 2) + "*00000";
-        this.fetchGugunData(regcode);
-        this.resetDong();
-      } else {
-        this.resetGugunAndDong();
-      }
-    },
-    onGugunChange() {
-      if (this.selectedGugun) {
-        const regcode = this.selectedGugun.code.substr(0, 5) + "*";
-        this.fetchDongData(regcode);
-      } else {
-        this.resetDong();
-      }
-    },
-    resetGugunAndDong() {
-      this.gugunOptions = [];
-      this.dongOptions = [];
-    },
-    resetDong() {
-      this.dongOptions = [];
-    },
-    sendRequest(selid, regcode) {
-      const url = "https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/regcodes";
-      const params = new URLSearchParams({
-        regcode_pattern: regcode,
-        is_ignore_zero: true,
-      }).toString();
-
-      fetch(`${url}?${params}`)
-        .then((response) => response.json())
-        .then((data) => this.addOption(selid, data));
-    },
-    addOption(selid, data) {
-      switch (selid) {
-        case "sido":
-          this.sidoOptions = data.regcodes.map((regcode) => ({
-            code: regcode.code,
-            name: regcode.name,
-          }));
-          break;
-        case "gugun":
-          this.gugunOptions = data.regcodes.map((regcode) => {
-            const nameParts = regcode.name.split(" ");
-            const name = nameParts.slice(1).join(" ");
-            return { code: regcode.code, name };
-          });
-          break;
-        case "dong":
-          this.dongOptions = data.regcodes.map((regcode) => {
-            const nameParts = regcode.name.split(" ");
-            const name = nameParts.slice(-1).join(" ");
-            return { code: regcode.code, name };
-          });
-          break;
-      }
-    },
-  },
+// 시도 데이터 가져오기
+const fetchSidoData = () => {
+  sendRequest("sido", "*00000000");
 };
+
+// 구군 데이터 가져오기
+const fetchGugunData = (regcode) => {
+  sendRequest("gugun", regcode);
+};
+
+// 동 데이터 가져오기
+const fetchDongData = (regcode) => {
+  sendRequest("dong", regcode);
+};
+
+// 시도 변경 이벤트 핸들러
+const onSidoChange = () => {
+  if (selectedSido.value) {
+    const regcode = selectedSido.value.code.substr(0, 2) + "*00000";
+    fetchGugunData(regcode);
+    resetDong();
+  } else {
+    resetGugunAndDong();
+  }
+};
+
+// 구군 변경 이벤트 핸들러
+const onGugunChange = () => {
+  if (selectedGugun.value) {
+    const regcode = selectedGugun.value.code.substr(0, 5) + "*";
+    fetchDongData(regcode);
+  } else {
+    resetDong();
+  }
+};
+
+// 구군 및 동 초기화
+const resetGugunAndDong = () => {
+  gugunOptions.value = [];
+  dongOptions.value = [];
+};
+
+// 동 초기화
+const resetDong = () => {
+  dongOptions.value = [];
+};
+
+// 회원가입 요청
+const registerUser = () => {
+  // 비밀번호 확인 검증
+  if (formData.password !== formData.passwordConfirm) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  // 관심 지역 정보 추가
+  const userData = {
+    ...formData,
+    sido: selectedSido.value?.name || "",
+    gugun: selectedGugun.value?.name || "",
+    dong: selectedDong.value?.name || "",
+  };
+
+  // 회원가입 요청
+  userStore
+    .register(userData)
+    .then(() => {
+      alert("회원가입이 성공적으로 완료되었습니다.");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("회원가입 중 오류가 발생했습니다.");
+    });
+};
+
+// 요청 전송 함수
+const sendRequest = (selid, regcode) => {
+  const url = "https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/regcodes";
+  const params = new URLSearchParams({
+    regcode_pattern: regcode,
+    is_ignore_zero: true,
+  }).toString();
+
+  fetch(`${url}?${params}`)
+    .then((response) => response.json())
+    .then((data) => addOption(selid, data));
+};
+
+// 옵션 추가 함수
+const addOption = (selid, data) => {
+  switch (selid) {
+    case "sido":
+      sidoOptions.value = data.regcodes.map((regcode) => ({
+        code: regcode.code,
+        name: regcode.name,
+      }));
+      break;
+    case "gugun":
+      gugunOptions.value = data.regcodes.map((regcode) => {
+        const nameParts = regcode.name.split(" ");
+        const name = nameParts.slice(1).join(" ");
+        return { code: regcode.code, name };
+      });
+      break;
+    case "dong":
+      dongOptions.value = data.regcodes.map((regcode) => {
+        const nameParts = regcode.name.split(" ");
+        const name = nameParts.slice(-1).join(" ");
+        return { code: regcode.code, name };
+      });
+      break;
+  }
+};
+
+// 컴포넌트가 마운트될 때 시도 데이터 로드
+onMounted(() => {
+  fetchSidoData();
+});
 </script>
+
 
 <template>
   <div class="signup-view">

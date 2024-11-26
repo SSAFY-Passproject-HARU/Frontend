@@ -20,16 +20,28 @@ export const useUserStore = defineStore("user", () => {
     role: "",
   });
 
+  // 사용자 데이터 로드 함수 (새로고침 시 활용)
+  async function fetchUser() {
+    try {
+      const res = await userHttp.get(""); // 사용자 정보 요청 API 호출
+      Object.assign(user, res.data); // 사용자 데이터 상태 반영
+    } catch (err) {
+      console.error("사용자 데이터를 가져오는 중 오류 발생:", err);
+    }
+  }
+
   // 로그인
   function login(id, password) {
     userHttp
       .post("/login", { id, password })
       .then(() => {
         getUserData(); // 로그인 후 사용자 데이터 로드
+        router.push("/home");
       })
       .catch((err) => {
         console.error(err);
         alert("로그인 실패! 아이디와 비밀번호를 확인해주세요.");
+        window.location.reload(); // 페이지 새로고침
       });
   }
 
@@ -115,6 +127,7 @@ export const useUserStore = defineStore("user", () => {
 
   return {
     user,
+    fetchUser,
     login,
     logout,
     register,

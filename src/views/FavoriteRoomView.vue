@@ -46,8 +46,14 @@ const fetchFavoriteRooms = async () => {
 };
 
 // 컴포넌트 마운트 시 유저 ID 설정 및 데이터 로드
-onMounted(() => {
-  userId.value = userStore.user?.id; // 유저 ID 설정
+onMounted(async () => {
+  console.log("컴포넌트 마운트됨");
+  if (!userStore.user.id) {
+    console.log("유저 정보가 없으므로 서버에서 가져옵니다.");
+    await userStore.fetchUser(); // 서버에서 유저 정보를 로드
+  }
+  userId.value = userStore.user.id;
+  console.log(userId.value);
   if (userId.value) {
     fetchFavoriteRooms();
   } else {
