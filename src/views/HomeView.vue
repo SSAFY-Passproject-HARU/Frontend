@@ -1,14 +1,28 @@
 <script setup>
 import { ref, onMounted, watchEffect } from "vue";
 import axios from "axios";
-import HouseImageCard from "@/components/house/HouseImageCard.vue";
 import NavBar from "@/components/common/NavBar.vue";
 import TopBar from "@/components/common/TopBar.vue";
 import { useUserStore } from "@/stores/user";
+import HomeRoomCard from "@/components/house/HomeRoomCard.vue";
 
 // 매물 리스트 데이터를 저장할 ref
-const houseList = ref([]);
 const userStore = useUserStore();
+const rooms = ref([]);
+const favoriteRooms = ref([]);
+
+// 찜한 매물 데이터 가져오기 함수
+const fetchFavoriteRooms = async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/room/favorites?userId=${userStore.user.id}`
+    );
+    favoriteRooms.value = response.data; // 데이터 배열에 저장
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error fetching favorite rooms:", error);
+  }
+};
 
 // 유저 선호 매물을 가져오는 함수
 const fetchRecommendationList = async () => {
@@ -18,21 +32,31 @@ const fetchRecommendationList = async () => {
       const response = await axios.get(
         `http://localhost:8080/room/recommendation/${userStore.user.id}`
       );
-      houseList.value = response.data; // 추천 매물 데이터를 houseList에 저장
+      rooms.value = response.data;
     }
   } catch (error) {
     console.error("추천 매물 데이터를 가져오는 데 실패했습니다:", error);
   }
 };
 
-watchEffect(() => {
+// 찜한 매물 여부를 확인하는 함수
+const isRoomFavorited = (roomId) => {
+  if (roomId == 4) {
+    console.log(favoriteRooms.value.some((favoriteRoom) => favoriteRoom.roomId === roomId));
+  }
+  return favoriteRooms.value.some((favoriteRoom) => favoriteRoom.roomId === roomId);
+};
+
+watchEffect(async () => {
   if (userStore.user.sido && userStore.user.gugun && userStore.user.dong && userStore.user.id) {
+    await fetchFavoriteRooms();
     fetchRecommendationList();
   }
 });
 
 // 컴포넌트가 마운트될 때 데이터 호출
-onMounted(() => {
+onMounted(async () => {
+  await fetchFavoriteRooms();
   fetchRecommendationList();
 });
 </script>
@@ -46,9 +70,14 @@ onMounted(() => {
         <div class="top-menu">
           <h1 class="title">맞춤 추천 매물</h1>
         </div>
-        <div class="house-list">
-          <!-- houseList 배열을 순회하여 HouseImageCard 컴포넌트를 렌더링 -->
-          <HouseImageCard v-for="house in houseList" :key="house.roomId" :house="house" />
+        <div class="rooms">
+          <!-- rooms 배열을 순회하여 HomeRoomCard 컴포넌트를 렌더링 -->
+          <HomeRoomCard
+            v-for="room in rooms"
+            :key="room.roomId"
+            :roomId="room.roomId"
+            :like="isRoomFavorited(room.roomId)"
+          />
         </div>
       </div>
     </div>
@@ -115,7 +144,7 @@ button {
   font-weight: var(--font-weight-bold);
 }
 
-.house-list {
+.rooms {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
